@@ -34,56 +34,11 @@ db = SQL("sqlite:///bmwreview.db")
 def homepage():
     return render_template("homepage.html")
 
-@app.route("/buy", methods=["GET", "POST"])
+@app.route("/profile")
 @login_required
-def buy():
+def profile():
 
-    if request.method == "POST":
-        # making sure the shares input is not a fraction or a non-integer
-        try:
-            shares = int(request.form.get("shares"))
-        # if not, redirect user to an error message
-        except:
-            return apology("this amount of shares is not valid")
-
-        stock = request.form.get("symbol")
-        # checking if the symbol field is not empty
-        if not stock:
-            return apology("must provide stock")
-        # checking if the shares field is not empty
-        if not shares:
-            return apology("must provide shares")
-        # checking if the function can give the stock data back
-        # if not, the stock apparently doesn't exist
-        if not lookup(stock):
-            return apology("this stock is not valid")
-        # ensure that the amount of shares is not negative
-        if shares < 0:
-            return apology("this amount of shares is not valid")
-        # fetching the live price for the stock and computing the transaction amount
-        price = int(lookup(stock)['price'])
-        total = price * shares
-
-        # checking if the user has enough credit to complete the transaction
-        cash = db.execute("SELECT cash FROM users WHERE id = :id", id = session["user_id"])[0]['cash']
-        if total > cash:
-            return apology("There is not enough credit to complete transaction")
-        # inserting the stock and relevant information about the transaction in the database
-        db.execute("INSERT INTO stocks (symbol, shares, price, total, user_id) VALUES (:symbol,:shares,:price,:total,:user_id)", symbol = stock, shares = shares, price = price, total = total, user_id = session["user_id"])
-        # computing the new amount of credit on the users acount and updating it in the database
-        newcash = cash - total
-        db.execute("UPDATE users SET cash = :newcash WHERE id = :id", id = session['user_id'], newcash = newcash)
-        # after the transaction is completed the user is redirected to the homepage
-        return redirect(url_for("homepage"))
-    else:
-        return render_template("buy.html")
-
-
-@app.route("/history")
-@login_required
-def history():
-    """Show history of transactions."""
-    return apology("TODO")
+    return render_template("profile.html")
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -130,27 +85,10 @@ def logout():
     # redirect user to login form
     return redirect(url_for("login"))
 
-@app.route("/quote", methods=["GET", "POST"])
-@login_required
-def quote():
-    """Get stock quote."""
-    if request.method == "POST":
-        # if the user doesn't input a stock, provide an error message
-        if len(request.form.get("symbol")) == 0:
-            return apology("This stock is not valid")
-        # checking if the symbol represents an actual stock
-        elif not lookup(request.form.get("symbol")):
-            return apology("This stock is not valid")
-        # if it does, make the relevant variables for the stock quote
-        else:
-            quote = lookup(request.form.get("symbol"))
-            name = quote['name']
-            price = usd(quote['price'])
-            symbol = quote['symbol']
-            # return values to the template
-            return render_template("quoted.html", price = price, name = name, symbol = symbol)
-    else:
-        return render_template("quote.html")
+@app.route("/favourites", methods=["GET", "POST"])
+def favourites():
+
+    return render_template("favourites.html")
 
 
 @app.route("/register", methods=["GET", "POST"])
@@ -200,9 +138,3 @@ def register():
     # else if user reached route via GET (as by clicking a link or via redirect)
     else:
         return render_template("register.html")
-
-@app.route("/sell", methods=["GET", "POST"])
-@login_required
-def sell():
-    """Sell shares of stock."""
-    return apology("TODO")
