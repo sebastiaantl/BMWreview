@@ -27,3 +27,9 @@ main td
     /* left-align tables' cells */
     text-align: left;
 }
+
+ul {
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
