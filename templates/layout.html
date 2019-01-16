@@ -36,22 +36,15 @@
                         <a class="navbar-brand" href="{{ url_for('homepage') }}"><span class="blue">B</span><span class="red">M</span><span class="yellow">W</span><span class="green">Review</span></a>
                     </div>
                     <div class="collapse navbar-collapse" id="navbar">
-                        {% if session.user_id %}
-                            <ul class="nav navbar-nav">
-                                <li><a href="{{ url_for('quote') }}">Quote</a></li>
-                                <li><a href="{{ url_for('buy') }}">Buy</a></li>
-                                <li><a href="{{ url_for('sell') }}">Sell</a></li>
-                                <li><a href="{{ url_for('history') }}">History</a></li>
-                            </ul>
-                            <ul class="nav navbar-nav navbar-right">
-                                <li><a href="{{ url_for('logout') }}">Log Out</a></li>
-                            </ul>
-                        {% else %}
-                            <ul class="nav navbar-nav navbar-right">
-                                <li><a href="{{ url_for('register') }}">Register</a></li>
-                                <li><a href="{{ url_for('login') }}">Log In</a></li>
-                            </ul>
-                        {% endif %}
+                        <ul class="nav navbar-nav">
+                            <li><a href="{{ url_for('quote') }}">Quote</a></li>
+                            <li><a href="{{ url_for('buy') }}">Buy</a></li>
+                            <li><a href="{{ url_for('sell') }}">Sell</a></li>
+                            <li><a href="{{ url_for('history') }}">History</a></li>
+                        </ul>
+                        <ul class="nav navbar-nav navbar-right">
+                            <li><a href="{{ url_for('logout') }}">Log Out</a></li>
+                        </ul>
                     </div>
                 </div>
             </nav>

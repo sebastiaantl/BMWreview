@@ -31,7 +31,6 @@ Session(app)
 db = SQL("sqlite:///bmwreview.db")
 
 @app.route("/")
-@login_required
 def homepage():
     return render_template("homepage.html")
 
