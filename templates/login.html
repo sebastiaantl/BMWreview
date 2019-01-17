@@ -5,6 +5,7 @@
 {% endblock %}
 
 {% block main %}
+    <p>
     <form action="{{ url_for('login') }}" method="post">
         <fieldset>
             <div class="form-group">
@@ -17,5 +18,9 @@
                 <button class="btn btn-default" type="submit">Log In</button>
             </div>
         </fieldset>
+    </p>
     </form>
+    <p>
+        <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Register Here</a>
+    </p>
 {% endblock %}
