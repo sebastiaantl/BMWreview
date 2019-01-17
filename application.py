@@ -143,7 +143,6 @@ def register():
 @app.route("/search")
 def search():
     a = request.args.get('query')
-    results = db.execute("SELECT Make, Model, Generation FROM data WHERE upper(Model) = :a UNION ALL SELECT Make, Model, Generation FROM data WHERE upper(Generation) =:b", a=a.upper(), b=a.upper())
-    resultsnumber = len(results)
+    results = [db.execute("SELECT Make, Model, Generation FROM data WHERE upper(Model) = :a UNION SELECT Make, Model, Generation FROM data WHERE upper(Generation) =:b", a=a.upper(), b=a.upper())]
+    resultsnumber = len(results[0])
     return render_template("searchresult.html", a=a, results=results, resultsnumber=resultsnumber)
-
