@@ -8,7 +8,7 @@ U searched for: {{a}}, there are {{resultsnumber}} matches found!
 
 Results:
 <br>
-    {% for x in results[0] %}
-        {{x}}<br>
+    {% for x in results %}
+        {{x['Make']}}, {{x['Model']}},{{x['Generation']}}<br>
     {% endfor %}
 {% endblock %}
