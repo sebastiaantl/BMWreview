@@ -151,7 +151,7 @@ def search():
 def carpage():
     """Show user car info."""
     id_trim = 25952
-    header = db.execute("SELECT Make, Model, Generation, Year_from_Generation, Year_to_Generation FROM data WHERE id_trim = 25952")
+    header = db.execute("SELECT Make, Model, Generation, Year_from_Generation, Year_to_Generation FROM data WHERE id_trim = :id_trim", id_trim = id_trim)
     brand = header[0]["Make"]
     model = header[0]["Model"]
     generation = header[0]["Generation"]
