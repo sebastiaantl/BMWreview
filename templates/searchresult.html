@@ -4,6 +4,7 @@
 {% endblock %}
 
 {% block main %}
+<center>
 U searched for: {{a}}, there are {{resultsnumber}} matches found!
 
 Results:
@@ -11,4 +12,5 @@ Results:
     {% for x in results %}
         {{x['Make']}}, {{x['Model']}},{{x['Generation']}}<br>
     {% endfor %}
+</center>
 {% endblock %}

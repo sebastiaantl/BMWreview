@@ -146,3 +146,17 @@ def search():
     results = db.execute("SELECT Make, Model, Generation FROM data WHERE upper(Model) = :a UNION ALL SELECT Make, Model, Generation FROM data WHERE upper(Generation) =:b", a=a.upper(), b=a.upper())
     resultsnumber = len(results)
     return render_template("searchresult.html", a=a, results=results, resultsnumber=resultsnumber)
+
+@app.route("/carpage")
+def carpage():
+    """Show user car info."""
+    id_trim = 25952
+    header = db.execute("SELECT Make, Model, Generation, Year_from_Generation, Year_to_Generation FROM data WHERE id_trim = 25952")
+    brand = header[0]["Make"]
+    model = header[0]["Model"]
+    generation = header[0]["Generation"]
+    startyear = header[0]["Year_from_Generation"]
+    endyear = header[0]["Year_to_Generation"]
+
+    # redirect user to carpage
+    return render_template("carpage.html", brand = brand, model = model, generation = generation, startyear = startyear, endyear = endyear)
