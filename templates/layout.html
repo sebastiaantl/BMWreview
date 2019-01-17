@@ -41,6 +41,12 @@
                             <li><a href="{{ url_for('favourites') }}"><img src="https://github.com/sebastiaantl/BMWreview/blob/master/templates/favourites.png?raw=true" style="width:20%;length:20%"></img></a></li>
                             <li><a href="{{ url_for('profile') }}"><img src="https://github.com/sebastiaantl/BMWreview/blob/master/profilepic.png?raw=true" style="width:10%;length:10%"></img></a></li>
                         </ul>
+                            <ul>
+                              <form method="GET" action="search">
+                                <input type="text" name="query" placeholder="Search for your car here"></input>
+                                <button type="submit">Search</button>
+                              </form>
+                        </ul>
                     </div>
                 </div>
             </nav>

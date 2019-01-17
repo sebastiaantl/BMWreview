@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+{% block title %}
+    Log In
+{% endblock %}
+
+{% block main %}
+U searched for: {{a}}, there are {{resultsnumber}} matches found!
+
+Results:
+<br>
+    {% for x in results[0] %}
+        {{x}}<br>
+    {% endfor %}
+{% endblock %}

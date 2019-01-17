@@ -1,5 +1,6 @@
 from cs50 import SQL
 from flask import Flask, flash, redirect, render_template, request, session, url_for
+from flask import request
 from flask_session import Session
 from passlib.apps import custom_app_context as pwd_context
 from tempfile import mkdtemp
@@ -138,3 +139,10 @@ def register():
     # else if user reached route via GET (as by clicking a link or via redirect)
     else:
         return render_template("register.html")
+
+@app.route("/search")
+def search():
+    a = request.args.get('query')
+    results = [db.execute("SELECT Make, Model, Generation FROM data WHERE upper(Model) = :a UNION ALL SELECT Make, Model, Generation FROM data WHERE upper(Generation) =:b", a=a.upper(), b=a.upper())]
+    resultsnumber = len(results[0])
+    return render_template("searchresult.html", a=a, results=results, resultsnumber=resultsnumber)
