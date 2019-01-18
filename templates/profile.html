@@ -5,5 +5,52 @@
 {% endblock %}
 
 {% block main %}
-    profile
+    <div class="container-fluid">
+
+        <div class="row">
+
+            <div class="col-md-4">
+                <img src="https://via.placeholder.com/250">
+
+                <h2>
+                    {{ username }}
+                </h2>
+            </div>
+
+            <div class="col-md-8">
+                {{ bio }}
+            </div>
+            <center>
+                <div class="col-md-12">
+                    <h3>
+                        Reviews
+                    </h3>
+                </div>
+            </center>
+        </div>
+
+            <table class="table">
+
+              <tbody>
+                <tr>
+                  <th scope="row"></th>
+                  <td>Mark</td>
+                  <td>Otto</td>
+                  <td>@mdo</td>
+                </tr>
+                <tr>
+                  <th scope="row"></th>
+                  <td>Jacob</td>
+                  <td>Thornton</td>
+                  <td>@fat</td>
+                </tr>
+                <tr>
+                  <th scope="row"></th>
+                  <td>Larry</td>
+                  <td>the Bird</td>
+                  <td>@twitter</td>
+                </tr>
+              </tbody>
+            </table>
+    </div>
 {% endblock %}
