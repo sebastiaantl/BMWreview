@@ -39,7 +39,9 @@ def homepage():
 @login_required
 def profile():
 
-    return render_template("profile.html")
+    bio = db.execute("SELECT bio FROM users WHERE id = :id", id = session["user_id"])
+    username = db.execute("SELECT username FROM users WHERE id = :id", id = session["user_id"])[0]['username']
+    return render_template("profile.html", username = username, bio = bio)
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -125,9 +127,12 @@ def register():
         rows = db.execute("SELECT * FROM users WHERE username = :username", username=request.form.get("username"))
         if len(rows) == 1:
             return apology("username already exists")
+        bio = request.form.get("bio")
+        if len(bio) == 0:
+            bio = 'no bio'
 
         #insert username into database
-        db.execute("INSERT into users (username, password, email) VALUES(:username, :password, :email)", username= request.form.get("username"), password = pwd_context.hash(request.form.get("password")), email = request.form.get("email"))
+        db.execute("INSERT into users (username, password, email, bio) VALUES(:username, :password, :email, :bio)", username= request.form.get("username"), password = pwd_context.hash(request.form.get("password")), email = request.form.get("email"), bio = bio)
 
         rows = db.execute("SELECT * FROM users WHERE username = :username", username=request.form.get("username"))
         # remember which user has logged in
