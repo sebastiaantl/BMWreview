@@ -19,7 +19,7 @@ main .form-control
 main img
 {
     /* constrain images on small screens */
-    max-width: 100%;
+    max-width: 80%;
 }
 
 main td
