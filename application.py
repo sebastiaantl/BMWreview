@@ -143,9 +143,25 @@ def register():
 @app.route("/search")
 def search():
     a = request.args.get('query')
+    global thequery
+    thequery = a
     results = db.execute("SELECT Make, Model, Generation FROM data WHERE upper(Model) = :a UNION ALL SELECT Make, Model, Generation FROM data WHERE upper(Generation) =:b", a=a.upper(), b=a.upper())
     resultsnumber = len(results)
     return render_template("searchresult.html", a=a, results=results, resultsnumber=resultsnumber)
+
+
+@app.route("/filter")
+def filter():
+    seats = request.args.get('seats')
+    if seats =="":
+        seats=""
+    results = db.execute("SELECT Make, Model, Generation FROM data WHERE upper(Model) = :a UNION ALL SELECT Make, Model, Generation FROM data WHERE upper(Generation) =:b", a=thequery.upper(), b=thequery.upper())
+    model = [results[0]["Model"]]
+    for x in model:
+        filteredseats = db.execute("SELECT Make, Model, Generation, Serie, Number_of_seater  FROM data WHERE Number_of_seater= :seats AND upper(Model) = :x", seats=seats, x=x.upper())
+    if len(filteredseats) == 0:
+        filteredseats = "No car match found!"
+    return render_template("filter.html", seats = seats, thequery = thequery, model=model, results=results, filteredseats = filteredseats)
 
 @app.route("/carpage")
 def carpage():

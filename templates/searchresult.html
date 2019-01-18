@@ -1,14 +1,30 @@
 {% extends "layout.html" %}
 {% block title %}
-    Log In
+    Search Result
 {% endblock %}
 
 {% block main %}
 <center>
-U searched for: {{a}}, there are {{resultsnumber}} matches found!
+U searched for: {{a}}, there are {{resultsnumber}} matches found!<br>
+
+{{f}}<br>
 
 Results:
+</center>
 <br>
+<table>
+    <form method="GET" action="filter">
+        <select name="seats">
+            <option selected value=""> -- select number of seats -- </option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+        </select>
+    <button type="submit">Filter</button>
+    </form>
+</table>
+<center>
     {% for x in results %}
         {{x['Make']}}, {{x['Model']}},{{x['Generation']}}<br>
     {% endfor %}
