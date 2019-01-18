@@ -7,7 +7,7 @@
 {% block main %}
     <center>
     <p>
-        <h1>{{brand}} {{model}} {{generation}} {{startyear}}-{{endyear}} <span class="badge badge-secondary">New</span></h1>
+        <h1 class="h1">{{brand}} {{model}} {{generation}} {{startyear}}-{{endyear}}</h1>
     </p>
     <p>
     <div id="mycarousel" class="carousel slide" data-ride="carousel">
@@ -36,7 +36,30 @@
 </div>
     </p>
     <p>
-        <h1></h1><strong>Specifications:</strong></h1>
+        <h1 class="h1">Specifications:</h1>
+        <table class="table table-bordered">
+          <tbody>
+            <tr>
+              <th scope="row">Model</th>
+              <td>{{model}}</td>
+            </tr>
+            <tr>
+              <th scope="row">Generation</th>
+              <td>{{generation}}</td>
+            </tr>
+            <tr>
+              <th scope="row">Year_from_Generation</th>
+              <td>{{startyear}}</td>
+            </tr>
+            <tr>
+              <th scope="row">Year_to_Generation</th>
+              <td>{{endyear}}</td>
+            </tr>
+          </tbody>
+        </table>
+    </p>
+    <p>
+      <h1 class="h1">Reviews:</h1>
     </p>
     </center>
 {% endblock %}
