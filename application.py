@@ -153,15 +153,18 @@ def search():
 @app.route("/filter")
 def filter():
     seats = request.args.get('seats')
-    if seats =="":
-        seats=""
+    fromyear = request.args.get('fromyear')
+    toyear = request.args.get('toyear')
     results = db.execute("SELECT Make, Model, Generation FROM data WHERE upper(Model) = :a UNION ALL SELECT Make, Model, Generation FROM data WHERE upper(Generation) =:b", a=thequery.upper(), b=thequery.upper())
     model = [results[0]["Model"]]
+    error = ""
     for x in model:
         filteredseats = db.execute("SELECT Make, Model, Generation, Serie, Number_of_seater  FROM data WHERE Number_of_seater= :seats AND upper(Model) = :x", seats=seats, x=x.upper())
-    if len(filteredseats) == 0:
-        filteredseats = "No car match found!"
-    return render_template("filter.html", seats = seats, thequery = thequery, model=model, results=results, filteredseats = filteredseats)
+    if seats =="":
+        filteredseats = results
+    elif len(filteredseats) == 0:
+        error = "No Car Matches Found!"
+    return render_template("filter.html", seats = seats, thequery = thequery, model=model, results=results, filteredseats = filteredseats, error=error)
 
 @app.route("/carpage")
 def carpage():

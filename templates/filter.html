@@ -8,5 +8,10 @@
 {{thequery}}<br>
 {{seats, thequery}}
 <br><br> -->
-<center>{{filteredseats}}</center>
+<center>
+    {% for x in filteredseats %}
+    {{x['Make']}}, {{x['Model']}},{{x['Generation']}}<br>
+    {% endfor %}
+    {{error}}
+</center>
 {% endblock %}
