@@ -153,8 +153,7 @@ def search():
 @app.route("/filter")
 def filter():
     seats = request.args.get('seats')
-    fromyear = request.args.get('fromyear')
-    toyear = request.args.get('toyear')
+    enginetype= request.args.get('enginetype')
     results = db.execute("SELECT Make, Model, Generation FROM data WHERE upper(Model) = :a UNION ALL SELECT Make, Model, Generation FROM data WHERE upper(Generation) =:b", a=thequery.upper(), b=thequery.upper())
     model = [results[0]["Model"]]
     error = ""
@@ -164,6 +163,11 @@ def filter():
         filteredseats = results
     elif len(filteredseats) == 0:
         error = "No Car Matches Found!"
+    elif enginetype =="":
+        filteredseats = results
+    elif enginetype != "":
+        for x in model:
+            filteredseats = db.execute("SELECT Make, Model, Generation, Engine_type FROM data WHERE Engine_type = :enginetype AND upper(Model) = :x", enginetype=enginetype, x=x)
     return render_template("filter.html", seats = seats, thequery = thequery, model=model, results=results, filteredseats = filteredseats, error=error)
 
 @app.route("/carpage")
