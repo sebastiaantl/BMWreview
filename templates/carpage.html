@@ -39,22 +39,24 @@
         <h1 class="h1">Specifications:</h1>
         <table class="table table-bordered">
           <tbody>
+            {% for line in header %}
             <tr>
               <th scope="row">Model</th>
-              <td>{{model}}</td>
+              <td>{{ line.Model }}</td>
             </tr>
             <tr>
               <th scope="row">Generation</th>
-              <td>{{generation}}</td>
+              <td>{{ line.Generation }}</td>
             </tr>
             <tr>
               <th scope="row">Year_from_Generation</th>
-              <td>{{startyear}}</td>
+              <td>{{ line.Year_from_Generation }}</td>
             </tr>
             <tr>
               <th scope="row">Year_to_Generation</th>
-              <td>{{endyear}}</td>
+              <td>{{ line.Year_to_Generation }}</td>
             </tr>
+            {% endfor %}
           </tbody>
         </table>
     </p>
