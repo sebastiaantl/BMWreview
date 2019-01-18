@@ -169,8 +169,8 @@ def filter():
 @app.route("/carpage")
 def carpage():
     """Show user car info."""
-    id_trim = 25952
-    header = db.execute("SELECT Make, Model, Generation, Year_from_Generation, Year_to_Generation FROM data WHERE id_trim = :id_trim", id_trim = id_trim)
+    id = 1
+    header = db.execute("SELECT Make, Model, Generation, Year_from_Generation, Year_to_Generation FROM data WHERE id = :id", id = id)
     brand = header[0]["Make"]
     model = header[0]["Model"]
     generation = header[0]["Generation"]
@@ -178,4 +178,4 @@ def carpage():
     endyear = header[0]["Year_to_Generation"]
 
     # redirect user to carpage
-    return render_template("carpage.html", brand = brand, model = model, generation = generation, startyear = startyear, endyear = endyear)
+    return render_template("carpage.html", header = header, brand = brand, model = model, generation = generation, startyear = startyear, endyear = endyear)
