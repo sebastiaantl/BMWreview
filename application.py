@@ -41,7 +41,13 @@ def profile():
 
     bio = db.execute("SELECT bio FROM users WHERE id = :id", id = session["user_id"])
     username = db.execute("SELECT username FROM users WHERE id = :id", id = session["user_id"])[0]['username']
-    return render_template("profile.html", username = username, bio = bio)
+    reviews = db.execute("SELECT car_id, stars, review, date FROM reviews WHERE user_id = :user_id", user_id = session["user_id"])
+    car_id = reviews[0]["car_id"]
+    carname = db.execute("SELECT Make, Model, Generation FROM data WHERE id_trim = :id_trim", id_trim = car_id)
+    brand = carname[0]["Make"]
+    model = carname[0]["Model"]
+    generation = carname[0]["Generation"]
+    return render_template("profile.html", username = username, bio = bio, brand = brand, model = model, generation = generation, reviews = reviews)
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -175,16 +181,28 @@ def filter():
             filteredseats = db.execute("SELECT Make, Model, Generation, Engine_type FROM data WHERE Engine_type = :enginetype AND upper(Model) = :x", enginetype=enginetype, x=x)
     return render_template("filter.html", seats = seats, thequery = thequery, model=model, results=results, filteredseats = filteredseats, error=error)
 
-@app.route("/carpage")
+@app.route("/carpage", methods=["GET", "POST"])
 def carpage():
     """Show user car info."""
-    id = 1
-    header = db.execute("SELECT Make, Model, Generation, Year_from_Generation, Year_to_Generation FROM data WHERE id = :id", id = id)
+    # determine which car
+    id_trim = 25952
+
+    # select all specifications of the car from the database
+    header = db.execute("SELECT Make, Model, Generation, Year_from_Generation, Year_to_Generation FROM data WHERE id_trim = :id_trim", id_trim = id_trim)
     brand = header[0]["Make"]
     model = header[0]["Model"]
     generation = header[0]["Generation"]
     startyear = header[0]["Year_from_Generation"]
     endyear = header[0]["Year_to_Generation"]
 
+    # insert review into database
+    if request.method == "POST":
+        stars = request.form.get("rate")
+        print(request.form.get("rate"))
+        review = request.form.get("comment")
+        user_id = session.get("user_id")
+        db.execute("INSERT INTO reviews (car_id, user_id, stars, review) VALUES(:car_id, :user_id, :stars, :review)", car_id=id_trim, user_id=user_id, stars=stars, review=review)
+        return redirect(url_for("carpage"))
     # redirect user to carpage
-    return render_template("carpage.html", header = header, brand = brand, model = model, generation = generation, startyear = startyear, endyear = endyear)
+    else:
+        return render_template("carpage.html", header = header, brand = brand, model = model, generation = generation, startyear = startyear, endyear = endyear)

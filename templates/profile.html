@@ -29,28 +29,29 @@
             </center>
         </div>
 
-            <table class="table">
-
-              <tbody>
-                <tr>
-                  <th scope="row"></th>
-                  <td>Mark</td>
-                  <td>Otto</td>
-                  <td>@mdo</td>
-                </tr>
-                <tr>
-                  <th scope="row"></th>
-                  <td>Jacob</td>
-                  <td>Thornton</td>
-                  <td>@fat</td>
-                </tr>
-                <tr>
-                  <th scope="row"></th>
-                  <td>Larry</td>
-                  <td>the Bird</td>
-                  <td>@twitter</td>
-                </tr>
-              </tbody>
-            </table>
+        <p>
+        <table class="table table-bordered">
+          <tbody>
+            {% for line in reviews %}
+            <tr>
+              <th scope="row">Car</th>
+              <td>{{brand}} {{model}} {{generation}} </td>
+            </tr>
+            <tr>
+              <th scope="row">Stars</th>
+              <td>{{line.stars}}</td>
+            </tr>
+            <tr>
+              <th scope="row">Comment</th>
+              <td>{{ line.review }}</td>
+            </tr>
+            <tr>
+              <th scope="row">Date</th>
+              <td>{{ line.date }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+    </p>
     </div>
 {% endblock %}

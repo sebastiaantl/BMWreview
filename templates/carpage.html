@@ -61,7 +61,24 @@
         </table>
     </p>
     <p>
-      <h1 class="h1">Reviews:</h1>
+      <h1 class="h1">Make a Review:</h1>
+      <form action="{{url_for('carpage')}}" method="post">
+        <div class="form-group">
+          <label for="rate">Rate car with star:</label>
+          <select class="form-control" id="rate" type="number" name="rate">
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="comment">Add comment:</label>
+          <textarea class="form-control" id="comment" name="comment" rows="3"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary mb-2">Send review</button>
+      </form>
     </p>
     </center>
 {% endblock %}
