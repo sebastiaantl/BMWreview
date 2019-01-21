@@ -165,21 +165,27 @@ def search():
 def filter():
     seats = request.args.get('seats')
     enginetype= request.args.get('enginetype')
-    results = db.execute("SELECT Make, Model, Generation FROM data WHERE upper(Model) = :a UNION ALL SELECT Make, Model, Generation FROM data WHERE upper(Generation) =:b", a=thequery.upper(), b=thequery.upper())
-    model = [results[0]["Model"]]
+    results = db.execute("SELECT Make, Model, Generation FROM data WHERE upper(Model) = :model UNION ALL SELECT Make, Model, Generation FROM data WHERE upper(Generation) =:generation", model=thequery.upper(), generation=thequery.upper())
+    models = [results[0]["Model"]]
     error = ""
-    for x in model:
-        filteredseats = db.execute("SELECT Make, Model, Generation, Serie, Number_of_seater  FROM data WHERE Number_of_seater= :seats AND upper(Model) = :x", seats=seats, x=x.upper())
+
+    filtered = results
+    if seats =="" and enginetype =="":
+        filtered = results
     if seats =="":
-        filteredseats = results
-    elif len(filteredseats) == 0:
-        error = "No Car Matches Found!"
-    elif enginetype =="":
-        filteredseats = results
-    elif enginetype != "":
-        for x in model:
-            filteredseats = db.execute("SELECT Make, Model, Generation, Engine_type FROM data WHERE Engine_type = :enginetype AND upper(Model) = :x", enginetype=enginetype, x=x)
-    return render_template("filter.html", seats = seats, thequery = thequery, model=model, results=results, filteredseats = filteredseats, error=error)
+        if enginetype !="":
+            for model in models:
+                filtered = db.execute("SELECT Make, Model, Generation FROM data WHERE upper(Model) = :model AND Engine_type= :enginetype", model=model.upper(), enginetype=enginetype)
+    if seats !="":
+        if enginetype =="":
+            for model in models:
+                filtered = db.execute("SELECT Make,Model, Generation FROM data WHERE upper(Model) = :model AND Number_of_seater = :seats", model=model.upper(), seats=seats)
+        elif enginetype !="":
+            for model in models:
+                filtered = db.execute("SELECT Make,Model, Generation FROM data WHERE upper(Model) = :model AND Number_of_seater = :seats AND Engine_type= :enginetype", model=model.upper(), seats=seats, enginetype=enginetype)
+    if len(filtered) == 0:
+        error= "No cars found!"
+    return render_template("filter.html", seats = seats, thequery = thequery, filtered = filtered, error=error)
 
 @app.route("/carpage", methods=["GET", "POST"])
 def carpage():

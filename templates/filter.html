@@ -4,13 +4,9 @@
 {% endblock %}
 
 {% block main %}
-<!-- {{seats}}<br>
-{{thequery}}<br>
-{{seats, thequery}}
-<br><br> -->
 <center>
-    {% for x in filteredseats %}
-    {{x['Make']}}, {{x['Model']}},{{x['Generation']}}<br>
+    {% for x in filtered %}
+    {{x['Make']}}, {{x['Model']}},{{x['Generation']}},{{x['id']}}<br>
     {% endfor %}
     {{error}}
 </center>
