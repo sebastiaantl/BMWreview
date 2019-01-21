@@ -43,7 +43,7 @@ def profile():
     username = db.execute("SELECT username FROM users WHERE id = :id", id = session["user_id"])[0]['username']
     reviews = db.execute("SELECT car_id, stars, review, date FROM reviews WHERE user_id = :user_id", user_id = session["user_id"])
     car_id = reviews[0]["car_id"]
-    carname = db.execute("SELECT Make, Model, Generation FROM data WHERE id_trim = :id_trim", id_trim = car_id)
+    carname = db.execute("SELECT Make, Model, Generation FROM data WHERE id = :id", id = car_id)
     brand = carname[0]["Make"]
     model = carname[0]["Model"]
     generation = carname[0]["Generation"]
@@ -156,7 +156,7 @@ def search():
     a = request.args.get('query')
     global thequery
     thequery = a
-    results = db.execute("SELECT Make, Model, Generation FROM data WHERE upper(Model) = :a UNION ALL SELECT Make, Model, Generation FROM data WHERE upper(Generation) =:b", a=a.upper(), b=a.upper())
+    results = db.execute("SELECT Make, Model, Generation, id FROM data WHERE upper(Model) = :a UNION ALL SELECT Make, Model, Generation,id FROM data WHERE upper(Generation) =:b", a=a.upper(), b=a.upper())
     resultsnumber = len(results)
     return render_template("searchresult.html", a=a, results=results, resultsnumber=resultsnumber)
 
@@ -165,7 +165,7 @@ def search():
 def filter():
     seats = request.args.get('seats')
     enginetype= request.args.get('enginetype')
-    results = db.execute("SELECT Make, Model, Generation FROM data WHERE upper(Model) = :model UNION ALL SELECT Make, Model, Generation FROM data WHERE upper(Generation) =:generation", model=thequery.upper(), generation=thequery.upper())
+    results = db.execute("SELECT Make, Model,Generation,id FROM data WHERE upper(Model) = :model UNION ALL SELECT Make, Model, Generation,id FROM data WHERE upper(Generation) =:generation", model=thequery.upper(), generation=thequery.upper())
     models = [results[0]["Model"]]
     error = ""
 
@@ -175,26 +175,26 @@ def filter():
     if seats =="":
         if enginetype !="":
             for model in models:
-                filtered = db.execute("SELECT Make, Model, Generation FROM data WHERE upper(Model) = :model AND Engine_type= :enginetype", model=model.upper(), enginetype=enginetype)
+                filtered = db.execute("SELECT Make, Model,Generation,id FROM data WHERE upper(Model) = :model AND Engine_type= :enginetype", model=model.upper(), enginetype=enginetype)
     if seats !="":
         if enginetype =="":
             for model in models:
-                filtered = db.execute("SELECT Make,Model, Generation FROM data WHERE upper(Model) = :model AND Number_of_seater = :seats", model=model.upper(), seats=seats)
+                filtered = db.execute("SELECT Make,Model,Generation,id FROM data WHERE upper(Model) = :model AND Number_of_seater = :seats", model=model.upper(), seats=seats)
         elif enginetype !="":
             for model in models:
-                filtered = db.execute("SELECT Make,Model, Generation FROM data WHERE upper(Model) = :model AND Number_of_seater = :seats AND Engine_type= :enginetype", model=model.upper(), seats=seats, enginetype=enginetype)
+                filtered = db.execute("SELECT Make,Model,Generation,id FROM data WHERE upper(Model) = :model AND Number_of_seater = :seats AND Engine_type= :enginetype", model=model.upper(), seats=seats, enginetype=enginetype)
     if len(filtered) == 0:
         error= "No cars found!"
-    return render_template("filter.html", seats = seats, thequery = thequery, filtered = filtered, error=error)
+    return render_template("filter.html", seats = seats, thequery = thequery, filtered = filtered, error=error, results=results)
 
 @app.route("/carpage", methods=["GET", "POST"])
 def carpage():
     """Show user car info."""
     # determine which car
-    id_trim = 25952
+    id = request.args.get('id')
 
     # select all specifications of the car from the database
-    header = db.execute("SELECT Make, Model, Generation, Year_from_Generation, Year_to_Generation FROM data WHERE id_trim = :id_trim", id_trim = id_trim)
+    header = db.execute("SELECT Make, Model, Generation, Year_from_Generation, Year_to_Generation FROM data WHERE id = :id", id = id)
     brand = header[0]["Make"]
     model = header[0]["Model"]
     generation = header[0]["Generation"]
@@ -207,7 +207,7 @@ def carpage():
         print(request.form.get("rate"))
         review = request.form.get("comment")
         user_id = session.get("user_id")
-        db.execute("INSERT INTO reviews (car_id, user_id, stars, review) VALUES(:car_id, :user_id, :stars, :review)", car_id=id_trim, user_id=user_id, stars=stars, review=review)
+        db.execute("INSERT INTO reviews (car_id, user_id, stars, review) VALUES(:car_id, :user_id, :stars, :review)", car_id=id, user_id=user_id, stars=stars, review=review)
         return redirect(url_for("carpage"))
     # redirect user to carpage
     else:
