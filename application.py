@@ -156,7 +156,7 @@ def search():
     a = request.args.get('query')
     global thequery
     thequery = a
-    results = db.execute("SELECT Make, Model, Generation FROM data WHERE upper(Model) = :a UNION ALL SELECT Make, Model, Generation FROM data WHERE upper(Generation) =:b", a=a.upper(), b=a.upper())
+    results = db.execute("SELECT Make, Model, Generation, id FROM data WHERE upper(Model) = :a UNION ALL SELECT Make, Model, Generation,id FROM data WHERE upper(Generation) =:b", a=a.upper(), b=a.upper())
     resultsnumber = len(results)
     return render_template("searchresult.html", a=a, results=results, resultsnumber=resultsnumber)
 
@@ -165,7 +165,7 @@ def search():
 def filter():
     seats = request.args.get('seats')
     enginetype= request.args.get('enginetype')
-    results = db.execute("SELECT Make, Model, Generation FROM data WHERE upper(Model) = :model UNION ALL SELECT Make, Model, Generation FROM data WHERE upper(Generation) =:generation", model=thequery.upper(), generation=thequery.upper())
+    results = db.execute("SELECT Make, Model,Generation,id FROM data WHERE upper(Model) = :model UNION ALL SELECT Make, Model, Generation,id FROM data WHERE upper(Generation) =:generation", model=thequery.upper(), generation=thequery.upper())
     models = [results[0]["Model"]]
     error = ""
 
@@ -175,23 +175,23 @@ def filter():
     if seats =="":
         if enginetype !="":
             for model in models:
-                filtered = db.execute("SELECT Make, Model, Generation FROM data WHERE upper(Model) = :model AND Engine_type= :enginetype", model=model.upper(), enginetype=enginetype)
+                filtered = db.execute("SELECT Make, Model,Generation,id FROM data WHERE upper(Model) = :model AND Engine_type= :enginetype", model=model.upper(), enginetype=enginetype)
     if seats !="":
         if enginetype =="":
             for model in models:
-                filtered = db.execute("SELECT Make,Model, Generation FROM data WHERE upper(Model) = :model AND Number_of_seater = :seats", model=model.upper(), seats=seats)
+                filtered = db.execute("SELECT Make,Model,Generation,id FROM data WHERE upper(Model) = :model AND Number_of_seater = :seats", model=model.upper(), seats=seats)
         elif enginetype !="":
             for model in models:
-                filtered = db.execute("SELECT Make,Model, Generation FROM data WHERE upper(Model) = :model AND Number_of_seater = :seats AND Engine_type= :enginetype", model=model.upper(), seats=seats, enginetype=enginetype)
+                filtered = db.execute("SELECT Make,Model,Generation,id FROM data WHERE upper(Model) = :model AND Number_of_seater = :seats AND Engine_type= :enginetype", model=model.upper(), seats=seats, enginetype=enginetype)
     if len(filtered) == 0:
         error= "No cars found!"
-    return render_template("filter.html", seats = seats, thequery = thequery, filtered = filtered, error=error)
+    return render_template("filter.html", seats = seats, thequery = thequery, filtered = filtered, error=error, results=results)
 
 @app.route("/carpage", methods=["GET", "POST"])
 def carpage():
     """Show user car info."""
     # determine which car
-    id = 1
+    id = request.args.get('id')
 
     # select all specifications of the car from the database
     header = db.execute("SELECT Make, Model, Generation, Year_from_Generation, Year_to_Generation FROM data WHERE id = :id", id = id)
