@@ -43,7 +43,7 @@ def profile():
     username = db.execute("SELECT username FROM users WHERE id = :id", id = session["user_id"])[0]['username']
     reviews = db.execute("SELECT car_id, stars, review, date FROM reviews WHERE user_id = :user_id", user_id = session["user_id"])
     car_id = reviews[0]["car_id"]
-    carname = db.execute("SELECT Make, Model, Generation FROM data WHERE id_trim = :id_trim", id_trim = car_id)
+    carname = db.execute("SELECT Make, Model, Generation FROM data WHERE id = :id", id = car_id)
     brand = carname[0]["Make"]
     model = carname[0]["Model"]
     generation = carname[0]["Generation"]
@@ -191,10 +191,10 @@ def filter():
 def carpage():
     """Show user car info."""
     # determine which car
-    id_trim = 25952
+    id = 1
 
     # select all specifications of the car from the database
-    header = db.execute("SELECT Make, Model, Generation, Year_from_Generation, Year_to_Generation FROM data WHERE id_trim = :id_trim", id_trim = id_trim)
+    header = db.execute("SELECT Make, Model, Generation, Year_from_Generation, Year_to_Generation FROM data WHERE id = :id", id = id)
     brand = header[0]["Make"]
     model = header[0]["Model"]
     generation = header[0]["Generation"]
@@ -207,7 +207,7 @@ def carpage():
         print(request.form.get("rate"))
         review = request.form.get("comment")
         user_id = session.get("user_id")
-        db.execute("INSERT INTO reviews (car_id, user_id, stars, review) VALUES(:car_id, :user_id, :stars, :review)", car_id=id_trim, user_id=user_id, stars=stars, review=review)
+        db.execute("INSERT INTO reviews (car_id, user_id, stars, review) VALUES(:car_id, :user_id, :stars, :review)", car_id=id, user_id=user_id, stars=stars, review=review)
         return redirect(url_for("carpage"))
     # redirect user to carpage
     else:
