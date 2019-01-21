@@ -33,7 +33,7 @@ Results:
 </table>
 <center>
     {% for x in results %}
-        <a href="/carpage">{{x['Make']}}, {{x['Model']}},{{x['Generation']}}</a><br>
+        <a href="/carpage?id=">{{x['Make']}}, {{x['Model']}},{{x['Generation']}}</a><br>
     {% endfor %}
 </center>
 {% endblock %}

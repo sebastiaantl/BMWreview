@@ -6,7 +6,7 @@
 {% block main %}
 <center>
     {% for x in filtered %}
-    <a href="/carpage">{{x['Make']}}, {{x['Model']}},{{x['Generation']}},{{x['id']}}</a><br>
+    <a href="/carpage?id=">{{x['Make']}}, {{x['Model']}},{{x['Generation']}},{{x['id']}}</a><br>
     {% endfor %}
     {{error}}
 </center>
