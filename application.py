@@ -190,25 +190,23 @@ def filter():
 @app.route("/carpage", methods=["GET", "POST"])
 def carpage():
     """Show user car info."""
-    # determine which car
     id = request.args.get('id')
-
-    # select all specifications of the car from the database
     header = db.execute("SELECT Make, Model, Generation, Year_from_Generation, Year_to_Generation FROM data WHERE id = :id", id = id)
     brand = header[0]["Make"]
     model = header[0]["Model"]
     generation = header[0]["Generation"]
     startyear = header[0]["Year_from_Generation"]
     endyear = header[0]["Year_to_Generation"]
-
     # insert review into database
     if request.method == "POST":
+        print(id)
         stars = request.form.get("rate")
         print(request.form.get("rate"))
         review = request.form.get("comment")
         user_id = session.get("user_id")
         db.execute("INSERT INTO reviews (car_id, user_id, stars, review) VALUES(:car_id, :user_id, :stars, :review)", car_id=id, user_id=user_id, stars=stars, review=review)
-        return redirect(url_for("carpage"))
+        return render_template("carpage.html", header = header, brand = brand, model = model, generation = generation, startyear = startyear, endyear = endyear, id=id)
     # redirect user to carpage
+
     else:
-        return render_template("carpage.html", header = header, brand = brand, model = model, generation = generation, startyear = startyear, endyear = endyear)
+        return render_template("carpage.html", header = header, brand = brand, model = model, generation = generation, startyear = startyear, endyear = endyear, id=id)

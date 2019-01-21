@@ -62,7 +62,7 @@
     </p>
     <p>
       <h1 class="h1">Make a Review:</h1>
-      <form action="{{url_for('carpage')}}" method="post">
+      <form action="/carpage?id={{id}}" method="post">
         <div class="form-group">
           <label for="rate">Rate car with star:</label>
           <select class="form-control" id="rate" type="number" name="rate">
