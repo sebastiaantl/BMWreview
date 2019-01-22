@@ -33,7 +33,19 @@ db = SQL("sqlite:///bmwreview.db")
 
 @app.route("/")
 def homepage():
-    return render_template("homepage.html")
+    # select last five results and get corresponding car data
+    lastreviews = db.execute("SELECT * FROM reviews ORDER BY id DESC LIMIT 5")
+    lastcarids = []
+    print(lastreviews)
+    for x in lastreviews:
+        lastcarids.append(x['car_id'])
+    lastcarids.reverse()
+    lastcars= []
+    for ids in lastcarids:
+        lastcars.append(db.execute("SELECT Make, Model, Generation from data WHERE id = :id", id= ids))
+    for i in range(len(lastreviews)):
+        lastreviews.append(lastcars[i])
+    return render_template("homepage.html", lastreviews = lastreviews)
 
 @app.route("/profile")
 @login_required
@@ -42,12 +54,17 @@ def profile():
     bio = db.execute("SELECT bio FROM users WHERE id = :id", id = session["user_id"])
     username = db.execute("SELECT username FROM users WHERE id = :id", id = session["user_id"])[0]['username']
     reviews = db.execute("SELECT car_id, stars, review, date FROM reviews WHERE user_id = :user_id", user_id = session["user_id"])
-    car_id = reviews[0]["car_id"]
-    carname = db.execute("SELECT Make, Model, Generation FROM data WHERE id = :id", id = car_id)
-    brand = carname[0]["Make"]
-    model = carname[0]["Model"]
-    generation = carname[0]["Generation"]
-    return render_template("profile.html", username = username, bio = bio, brand = brand, model = model, generation = generation, reviews = reviews)
+    carlist = []
+    carids = []
+    for review in reviews:
+        car_id = review['car_id']
+        carids.append(car_id)
+        carlist.append(db.execute("SELECT Make, Model, Generation FROM data WHERE id = :id", id = car_id))
+    reviews.reverse()
+    carlist.reverse()
+    carids.reverse()
+    avatar = db.execute("SELECT avatar FROM users WHERE id= :id", id = session['user_id'])
+    return render_template("profile.html", username = username, bio = bio, reviews = reviews, carlist=carlist, length=len(carlist), carids=carids, avatar = avatar)
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -199,14 +216,17 @@ def carpage():
     endyear = header[0]["Year_to_Generation"]
     # insert review into database
     if request.method == "POST":
-        print(id)
         stars = request.form.get("rate")
         print(request.form.get("rate"))
         review = request.form.get("comment")
         user_id = session.get("user_id")
         db.execute("INSERT INTO reviews (car_id, user_id, stars, review) VALUES(:car_id, :user_id, :stars, :review)", car_id=id, user_id=user_id, stars=stars, review=review)
         return render_template("carpage.html", header = header, brand = brand, model = model, generation = generation, startyear = startyear, endyear = endyear, id=id)
-    # redirect user to carpage
-
     else:
         return render_template("carpage.html", header = header, brand = brand, model = model, generation = generation, startyear = startyear, endyear = endyear, id=id)
+
+@app.route("/update_avatar", methods=["GET", "POST"])
+def update_avatar():
+    avatarimg = request.form.get("avatar_url")
+    db.execute("UPDATE users SET avatar = :avatarimg WHERE id = :id", avatarimg = avatarimg, id = session['user_id'])
+    return redirect(url_for('profile'))
