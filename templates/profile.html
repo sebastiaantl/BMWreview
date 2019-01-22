@@ -6,15 +6,16 @@
 
 {% block main %}
 <center>
-
-        <img src="{{avatar[0]['avatar']}}" style="max-width: 250px; height: auto;"><br><br>
+        <h2>{{username}}</h2>
+        <img src="{{avatar[0]['avatar']}}" style="max-width: 250px; height: auto; border-radius:25px"><br><br>
         <form method="POST" action="/update_avatar">
         <input name="avatar_url" type="text" placeholder="Enter image url and file extension"></input>
         <button onclick="update_avatar">Update Avatar</button>
         </form>
         <br><br>
-        <b>{{username}}</b><br>
-        {{bio[0]['bio']}}
+        <div class="panel" style="width:60%">
+          {{bio[0]['bio']}}
+        </div>
         <h3>Reviews</h3>
         <p>
         <table class="table table-bordered" style="max-width: 50%">
