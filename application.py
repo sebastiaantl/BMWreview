@@ -45,8 +45,8 @@ def homepage():
         lastcars.append(db.execute("SELECT Make, Model, Generation from data WHERE id = :id", id= ids))
     for i in range(len(lastreviews)):
         lastreviews.append(lastcars[i])
-    return render_template("homepage.html", lastreviews = lastreviews)
-
+    highestrated = db.execute("SELECT Make, Model, Generation, stars FROM data ORDER BY stars DESC LIMIT 3")
+    return render_template("homepage.html", lastreviews = lastreviews, highestrated = highestrated)
 @app.route("/profile")
 @login_required
 def profile():
@@ -217,10 +217,18 @@ def carpage():
     # insert review into database
     if request.method == "POST":
         stars = request.form.get("rate")
-        print(request.form.get("rate"))
         review = request.form.get("comment")
         user_id = session.get("user_id")
+        old_number_grades = len(db.execute("SELECT car_id FROM reviews WHERE car_id= :car_id", car_id = id))
+        total_number_grades = old_number_grades + 1
         db.execute("INSERT INTO reviews (car_id, user_id, stars, review) VALUES(:car_id, :user_id, :stars, :review)", car_id=id, user_id=user_id, stars=stars, review=review)
+        total_grades = db.execute("SELECT stars FROM reviews WHERE car_id= :car_id", car_id = id)
+        total_grade = 0
+        for i in total_grades:
+            total_grade += i['stars']
+        grade = total_grade/total_number_grades
+        print (grade)
+        db.execute("UPDATE data SET stars= :grade WHERE id= :id", grade=grade, id=id)
         return render_template("carpage.html", header = header, brand = brand, model = model, generation = generation, startyear = startyear, endyear = endyear, id=id)
     else:
         return render_template("carpage.html", header = header, brand = brand, model = model, generation = generation, startyear = startyear, endyear = endyear, id=id)

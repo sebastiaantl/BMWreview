@@ -111,15 +111,3 @@ def lookup(symbol):
 def usd(value):
     """Formats value as USD."""
     return f"${value:,.2f}"
-
-def grade():
-    ids = db.execute("SELECT id FROM data")
-    carids = db.execute("SELECT car_id FROM reviews")
-    cars =[]
-    for i in range(len(carids)):
-        cars.append(carids[i]['car_id'])
-    #for i in range(len(ids)):
-        #if (ids[i]['id']) is in cars:
-         #   print(ids[i]['id'])
-        #db.execute("UPDATE data SET stars=0 WHERE id= :id", id = ids[i]['id'])
-    return cars
