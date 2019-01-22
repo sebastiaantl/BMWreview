@@ -5,26 +5,40 @@
 {% endblock %}
 
 {% block main %}
-    <form action="{{ url_for('register') }}" method="post">
-        <fieldset>
+    <div class="container">
+    <div class="login-form">
+    <div class="main-div">
+        <div class="panel">
+            <h2>Register</h2>
+            <p>Please enter your email, username and password</p>
+
+        <form action="{{ url_for('register') }}" method="post">
+
             <div class="form-group">
-                <input autocomplete="off" autofocus class="form-control" name="username" placeholder="username" type="text"/>
+                <input autocomplete="off" autofocus class="form-control" name="username" placeholder="Username" type="text"/>
             </div>
+
             <div class="form-group">
-                <input autocomplete="off" autofocus class="form-control" name="email" placeholder="email" type="text"/>
+                <input autocomplete="off" autofocus class="form-control" name="email" placeholder="Email" type="text"/>
             </div>
+
             <div class="form-group">
-                <input class="form-control" name="password" placeholder="password" type="password"/>
+                <input class="form-control" name="password" placeholder="Password" type="password"/>
             </div>
+
             <div class="form-group">
-                <input class="form-control" name="confirmation" placeholder="password (again)" type="password"/>
+                <input class="form-control" name="confirmation" placeholder="Password (again)" type="password"/>
             </div>
+
             <div class="form-group">
-                <input class="form-control" name="bio" placeholder="add a bio (optional)" type="text"/>
+                <input class="form-control" name="bio" placeholder="Add a bio (optional)" type="text"/>
             </div>
-            <div class="form-group">
-                <button class="btn btn-default" type="submit">Register</button></button>
-            </div>
-        </fieldset>
-    </form>
+
+            <button type="submit" class="btn btn-primary">Register</button>
+
+        </form>
+        </div>
+    </div>
+    </div>
+    </div>
 {% endblock %}
