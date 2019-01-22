@@ -5,53 +5,42 @@
 {% endblock %}
 
 {% block main %}
-    <div class="container-fluid">
+<center>
 
-        <div class="row">
-
-            <div class="col-md-4">
-                <img src="https://via.placeholder.com/250">
-
-                <h2>
-                    {{ username }}
-                </h2>
-            </div>
-
-            <div class="col-md-8">
-                {{ bio }}
-            </div>
-            <center>
-                <div class="col-md-12">
-                    <h3>
-                        Reviews
-                    </h3>
-                </div>
-            </center>
-        </div>
-
+        <img src="{{avatar[0]['avatar']}}" style="max-width: 250px; height: auto;"><br><br>
+        <form method="POST" action="/update_avatar">
+        <input name="avatar_url" type="text" placeholder="Enter image url and file extension"></input>
+        <button onclick="update_avatar">Update Avatar</button>
+        </form>
+        <br><br>
+        <b>{{username}}</b><br>
+        {{bio[0]['bio']}}
+        <h3>Reviews</h3>
         <p>
-        <table class="table table-bordered">
+        <table class="table table-bordered" style="max-width: 50%">
           <tbody>
-            {% for line in reviews %}
+            {% for i in range(0, length)%}
             <tr>
               <th scope="row">Car</th>
-              <td>{{brand}} {{model}} {{generation}} </td>
+              <td><a href="/carpage?id={{carids[i]}}">{{carlist[i][0]['Make']}},{{carlist[i][0]['Model']}}, {{carlist[i][0]['Generation']}}</a></td>
             </tr>
             <tr>
               <th scope="row">Stars</th>
-              <td>{{line.stars}}</td>
+              <td>{{reviews[i]['stars']}}</td>
             </tr>
             <tr>
               <th scope="row">Comment</th>
-              <td>{{ line.review }}</td>
+              <td>{{reviews[i]['review']}}</td>
             </tr>
             <tr>
               <th scope="row">Date</th>
-              <td>{{ line.date }}</td>
+              <td>{{reviews[i]['date']}}</td>
             </tr>
+            <tr style="height: 3em;"></tr>
             {% endfor %}
           </tbody>
         </table>
+        </center>
     </p>
     </div>
 {% endblock %}

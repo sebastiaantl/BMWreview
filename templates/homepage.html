@@ -5,5 +5,36 @@
 {% endblock %}
 
 {% block main %}
+<center>
+    <h1>Highest Rated Cars</h1>
+  HIER KOMEN DE AUTO'S MET DE HOOGSTE RATING!
 
+    <h1>Recent Reviews</h1><br><br>
+        <p>
+        <table class="table table-bordered" style="table-layout: fixed; max-width: 50%">
+          <tbody>
+            {% for i in range(0,5) %}
+            <tr>
+              <th scope="row">Car</th>
+              <td><a href="/carpage?id={{lastreviews[i]['car_id']}}">{{lastreviews[9-i][0]['Make']}} {{lastreviews[9-i][0]['Model']}} {{lastreviews[9-i][0]['Generation']}}</a></td>
+            </tr>
+            <tr>
+              <th scope="row">Stars</th>
+              <td>{{lastreviews[i]['stars']}}</td>
+            </tr>
+            <tr>
+              <th scope="row">Review</th>
+              <td>{{lastreviews[i]['review']}}</td>
+            </tr>
+            <tr>
+              <th scope="row">Date</th>
+              <td>{{lastreviews[i]['date']}}</td>
+            </tr>
+            <tr style="height: 3em;"></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+    </p>
+    </div>
+</center>
 {% endblock %}
