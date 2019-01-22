@@ -5,6 +5,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}"/>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 </head>
@@ -25,10 +26,18 @@
 
     </ul>
 
+    {% if session.get("user_id") != None %}
     <ul class="nav navbar-nav navbar-right">
+      <li><a href="{{ url_for('logout') }}"><span class="glyphicon glyphicon-log-out"></span> Log out</a></li>
       <li><a href="{{ url_for('profile') }}"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
       <li><a href="{{ url_for('favourites') }}"><span class="glyphicon glyphicon-heart"></span> Favourites</a></li>
     </ul>
+    {% else %}
+    <ul class="nav navbar-nav navbar-right">
+      <li><a href="{{ url_for('login') }}"><span class="glyphicon glyphicon-user"></span> Log in</a></li>
+    </ul>
+    {% endif %}
+
   </div>
 </nav>
   {%block main%}{%endblock%}
