@@ -13,6 +13,11 @@
             <h1>{{username}}</h1></div>
         <div class="col-sm-2">
             <a class="pull-right"><img title="profile image" class="img-circle img-responsive" src="https://bootdey.com/img/Content/avatar/avatar1.png"></a>
+            <a class="pull-right"><form method="POST" action="/update_avatar"></a>
+            <div class="form-group">
+                <input name="avatar_url" type="text" placeholder="Enter image url and file extension"></input>
+            </div>
+            <button class="btn btn-primary" onclick="update_avatar">Update Avatar</button>
         </div>
     </div>
     <div class="row">

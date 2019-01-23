@@ -215,7 +215,7 @@ def filter():
                 filtered = db.execute("SELECT Make,Model,Generation,id FROM data WHERE upper(Model) = :model AND Number_of_seater = :seats AND Engine_type= :enginetype", model=model.upper(), seats=seats, enginetype=enginetype)
     if len(filtered) == 0:
         error= "No cars found!"
-    return render_template("filter.html", seats = seats, thequery = thequery, filtered = filtered, error=error, results=results)
+    return render_template("filter2.html", seats = seats, thequery = thequery, filtered = filtered, error=error, results=results)
 
 @app.route("/carpage", methods=["GET", "POST"])
 def carpage():
