@@ -5,5 +5,9 @@
 {% endblock %}
 
 {% block main %}
-    <a href="{{ url_for('carpage') }}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Carpage</a>
+<center>
+    {% for x in range (0, length) %}
+        {{carslist[x][0]['Make']}} {{carslist[x][0]['Model']}} {{carslist[x][0]['Generation']}}<br>
+    {% endfor %}
+</center>
 {% endblock %}

@@ -113,8 +113,21 @@ def logout():
 
 @app.route("/favourites", methods=["GET", "POST"])
 def favourites():
+    """Saves a car as a favourite."""
+    user_id = session.get("user_id")
+    id = request.args.get('id')
+    if request.method == "POST":
+        db.execute("INSERT INTO favourites (car_id, user_id) VALUES(:car_id, :user_id)", car_id=id, user_id=user_id)
+    idresults = db.execute("SELECT car_id FROM favourites WHERE user_id = :user_id", user_id = user_id)
+    cars = []
+    for i in idresults:
+        cars.append(i['car_id'])
+    carslist = []
+    for x in cars:
+        carslist.append(db.execute("SELECT Make, Model, Generation FROM data WHERE id= :car", car=x))
+    length = len(carslist)
 
-    return render_template("favourites.html")
+    return render_template("favourites.html", carslist = carslist, length=length)
 
 
 @app.route("/register", methods=["GET", "POST"])
