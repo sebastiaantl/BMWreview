@@ -46,7 +46,7 @@ def homepage():
     for i in range(len(lastreviews)):
         lastreviews.append(lastcars[i])
     highestrated = db.execute("SELECT Make, Model, Generation, stars FROM data ORDER BY stars DESC LIMIT 3")
-    return render_template("homepage.html", lastreviews = lastreviews, highestrated = highestrated)
+    return render_template("homepage2.html", lastreviews = lastreviews, highestrated = highestrated)
 @app.route("/profile")
 @login_required
 def profile():
@@ -102,6 +102,7 @@ def login():
         return render_template("login.html")
 
 @app.route("/logout")
+@login_required
 def logout():
     """Log user out."""
 
@@ -112,6 +113,7 @@ def logout():
     return redirect(url_for("login"))
 
 @app.route("/favourites", methods=["GET", "POST"])
+@login_required
 def favourites():
     """Saves a car as a favourite."""
     user_id = session.get("user_id")
@@ -120,14 +122,16 @@ def favourites():
         db.execute("INSERT INTO favourites (car_id, user_id) VALUES(:car_id, :user_id)", car_id=id, user_id=user_id)
     idresults = db.execute("SELECT car_id FROM favourites WHERE user_id = :user_id", user_id = user_id)
     cars = []
+    faves = 0
     for i in idresults:
+        faves = faves + 1
         cars.append(i['car_id'])
     carslist = []
     for x in cars:
         carslist.append(db.execute("SELECT Make, Model, Generation FROM data WHERE id= :car", car=x))
     length = len(carslist)
 
-    return render_template("favourites.html", carslist = carslist, length=length)
+    return render_template("favourites2.html", carslist = carslist, length=length, faves = faves)
 
 
 @app.route("/register", methods=["GET", "POST"])
