@@ -8,6 +8,7 @@
 <div class="container">
     <div class="col-md-12">
         <h2>Highest rated cars</h2>
+
         {% for i in range (0,3) %}
         <section class="search-result-item">
             <a class="image-link" href="#"><img class="image" src="http://bootdey.com/img/Content/avatar/avatar1.png"></a>
@@ -26,32 +27,27 @@
     </div>
 </div>
 
-<center>
-    <h1>Recent Reviews</h1><br><br>
-    <p>
-      <table class="table table-bordered" style="table-layout: fixed; max-width: 50%">
-        <tbody>
-          {% for i in range(0,5) %}
-          <tr>
-            <th scope="row">Car</th>
-            <td><a href="/carpage?id={{lastreviews[i]['car_id']}}">{{lastreviews[9-i][0]['Make']}} {{lastreviews[9-i][0]['Model']}} {{lastreviews[9-i][0]['Generation']}}</a></td>
-          </tr>
-          <tr>
-            <th scope="row">Stars</th>
-            <td>{{lastreviews[i]['stars']}}</td>
-          </tr>
-          <tr>
-            <th scope="row">Review</th>
-            <td>{{lastreviews[i]['review']}}</td>
-          </tr>
-          <tr>
-            <th scope="row">Date</th>
-            <td>{{lastreviews[i]['date']}}</td>
-          </tr>
-          <tr style="height: 3em;"></tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </p>
-</center>
+<div class="container">
+  <center><h2>Recent reviews</h2></center>
+  {% for i in range(0,5) %}
+  <div class="reviews">
+    <div class="row blockquote review-item">
+      <div class="col-md-3 text-center">
+        <img class="rounded-circle reviewer" src="https://bootdey.com/img/Content/avatar/avatar1.png">
+        <div class="caption">
+          <small>By <a href="#">{{ username }}</a></small>
+        </div>
+      </div>
+
+      <div class="col-md-9">
+        <h4><a href="#">{{lastreviews[9-i][0]['Make']}} {{lastreviews[9-i][0]['Model']}} {{lastreviews[9-i][0]['Generation']}}</a></h4>
+        <h3>{{lastreviews[i]['stars']}}<span class="glyphicon glyphicon-star"></span></h3>
+        <p class="review-text">{{lastreviews[i]['review']}}</p>
+        <small class="review-date">{{lastreviews[i]['date']}}</small>
+      </div>
+
+    </div>
+  </div>
+  {% endfor %}
+</div>
 {% endblock %}
