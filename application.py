@@ -64,7 +64,7 @@ def profile():
     carlist.reverse()
     carids.reverse()
     avatar = db.execute("SELECT avatar FROM users WHERE id= :id", id = session['user_id'])
-    return render_template("profile.html", username = username, bio = bio, reviews = reviews, carlist=carlist, length=len(carlist), carids=carids, avatar = avatar)
+    return render_template("profile2.html", username = username, bio = bio, reviews = reviews, carlist=carlist, length=len(carlist), carids=carids, avatar = avatar)
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -188,7 +188,7 @@ def search():
     thequery = a
     results = db.execute("SELECT Make, Model, Generation, id FROM data WHERE upper(Model) = :a UNION ALL SELECT Make, Model, Generation,id FROM data WHERE upper(Generation) =:b", a=a.upper(), b=a.upper())
     resultsnumber = len(results)
-    return render_template("searchresult.html", a=a, results=results, resultsnumber=resultsnumber)
+    return render_template("searchresult2.html", a=a, results=results, resultsnumber=resultsnumber)
 
 
 @app.route("/filter")
