@@ -36,7 +36,9 @@
 </div>
     </p>
     <p>
-      <button type="button" class="btn btn-danger" action="/favourites">Favourite</button>
+      <form action="/favourites?id={{id}}" method="post">
+      <button type="submit" class="btn btn-danger">Favourite</button>
+      </form>
         <h1 class="h1">Specifications:</h1>
         <table class="table table-bordered">
           <tbody>
