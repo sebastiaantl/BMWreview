@@ -6,20 +6,24 @@
 
 {% block main %}
 
-<hr>
-<div class="container bootstrap snippet">
+<div class="container">
     <div class="row">
-        <div class="col-sm-10">
-            <h1>{{username}}</h1></div>
-        <div class="col-sm-2">
-            <a class="pull-right"><img title="profile image" class="img-circle img-responsive" src="https://bootdey.com/img/Content/avatar/avatar1.png"></a>
+        <div class="col-sm-9">
+            <div class="profile-name">{{username}}</div>
+        </div>
+        <div class="col-sm-3">
+
+            <img class="profile-pic" src="https://bootdey.com/img/Content/avatar/avatar1.png">
+
             <a class="pull-right"><form method="POST" action="/update_avatar"></a>
             <div class="form-group">
                 <input name="avatar_url" type="text" placeholder="Enter image url and file extension"></input>
             </div>
             <button class="btn btn-primary" onclick="update_avatar">Update Avatar</button>
+
         </div>
     </div>
+
     <div class="row">
         <div class="col-sm-5">
             <!--left col-->
@@ -37,29 +41,32 @@
             </ul>
 
         </div>
-        {% for i in range(0, length)%}
-        <div class="col-sm-7">
-            <div class="reviews">
-              <div class="row blockquote review-item">
 
-                <div class="col-md-3 text-center">
-                  <img class="rounded-circle reviewer" src="https://bootdey.com/img/Content/avatar/avatar1.png">
-                  <div class="caption">
-                    <small>By <a href="#">{{ username }}</a></small>
-                  </div>
+        {% for i in range(0,5) %}
+            <div class="profile-card">
+                <div class="row">
+
+                    <div class="col-md-2">
+                      <img class="pic" src="https://bootdey.com/img/Content/avatar/avatar1.png">
+                      <div class="reviewer">By username</div>
+                    </div>
+                    <div class="col-md-10">
+                      <div class="header"><a href="/carpage?id={{carids[i]}}"> {{carlist[i][0]['Make']}},{{carlist[i][0]['Model']}}, {{carlist[i][0]['Generation']}}</a></div>
+                        {% for i in range (0,5 - reviews[i]['stars']) %}
+                          <div class="stars"><span class="glyphicon glyphicon-star-empty"></span></div>
+                        {% endfor %}
+                        {% for i in range (0,reviews[i]['stars']) %}
+                          <div class="stars"><span class="glyphicon glyphicon-star"></span></div>
+                        {% endfor %}
+
+                      <div class="review">{{reviews[i]['review']}}</div>
+                      <div class="date">{{reviews[i]['date']}}</div>
+                    </div>
+
                 </div>
-
-                <div class="col-md-9">
-                  <h4><a href="/carpage?id={{carids[i]}}">{{carlist[i][0]['Make']}},{{carlist[i][0]['Model']}}, {{carlist[i][0]['Generation']}}</a></h4>
-                  <h3>{{reviews[i]['stars']}}<span class="glyphicon glyphicon-star"></span></h3>
-                  <p class="review-text">{{reviews[i]['review']}}</p>
-                  <small class="review-date">{{reviews[i]['date']}}</small>
-                </div>
-
-              </div>
             </div>
-        </div>
         {% endfor %}
+
     </div>
 </div>
 {% endblock %}

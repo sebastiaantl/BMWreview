@@ -6,48 +6,52 @@
 
 {% block main %}
 <div class="container">
-    <div class="col-md-12">
-        <h2>Highest rated cars</h2>
+        <div class="homepage-header">Highest rated cars</div>
 
         {% for i in range (0,3) %}
-        <section class="search-result-item">
-            <a class="image-link" href="#"><img class="image" src="http://bootdey.com/img/Content/avatar/avatar1.png"></a>
-            <div class="search-result-item-body">
-              <div class="col-sm-4">
-                  <h4 class="search-result-item-heading"><a href="/carpage?id={{i['id']}}">{{highestrated[i]['Make']}} {{highestrated[i]['Model']}} {{highestrated[i]['Generation']}}</a></h4>
-                  <p class="description">{{highestrated[i]['stars']}} <span class="glyphicon glyphicon-star"></span></p>
-              </div>
-              <div class="col-sm-2 text-align-center">
-                  <p class="value3 mt-sm">$9, 700</p>
-                  <a class="btn btn-primary btn-info btn-sm" href="#">Learn More</a>
-              </div>
-            </div>
+        <section class="car-card">
+
+          <a href="#"><img class="pic" src="http://bootdey.com/img/Content/avatar/avatar1.png"></a>
+          {% for i in range (0,5 - highestrated[i]['stars']) %}
+            <div class="stars"><span class="glyphicon glyphicon-star-empty"></span></div>
+          {% endfor %}
+          {% for i in range (0,highestrated[i]['stars']) %}
+            <div class="stars"><span class="glyphicon glyphicon-star"></span></div>
+          {% endfor %}
+
+          <div class="header"><a href="/carpage?id={{i['id']}}">{{highestrated[i]['Make']}} {{highestrated[i]['Model']}} {{highestrated[i]['Generation']}}</a></div><br/>
+
+          <div class="description">specs</div>
         </section>
         {% endfor %}
-    </div>
 </div>
 
 <div class="container">
-  <center><h2>Recent reviews</h2></center>
+  <div class="homepage-header">Recent reviews</div>
+
   {% for i in range(0,5) %}
-  <div class="reviews">
-    <div class="row blockquote review-item">
-      <div class="col-md-3 text-center">
-        <img class="rounded-circle reviewer" src="https://bootdey.com/img/Content/avatar/avatar1.png">
-        <div class="caption">
-          <small>By <a href="#">{{ username }}</a></small>
+    <div class="row">
+      <div class="review-card">
+        <div class="col-md-2">
+          <img class="pic" src="https://bootdey.com/img/Content/avatar/avatar1.png">
+          <div class="reviewer">By username</div>
         </div>
-      </div>
+        <div class="col-md-10">
+          <div class="header"><a href="#"> {{lastreviews[9-i][0]['Make']}} {{lastreviews[9-i][0]['Model']}} {{lastreviews[9-i][0]['Generation']}}</a></div>
+            {% for i in range (0,5 - lastreviews[i]['stars']) %}
+              <div class="stars"><span class="glyphicon glyphicon-star-empty"></span></div>
+            {% endfor %}
+            {% for i in range (0,lastreviews[i]['stars']) %}
+              <div class="stars"><span class="glyphicon glyphicon-star"></span></div>
+            {% endfor %}
 
-      <div class="col-md-9">
-        <h4><a href="#">{{lastreviews[9-i][0]['Make']}} {{lastreviews[9-i][0]['Model']}} {{lastreviews[9-i][0]['Generation']}}</a></h4>
-        <h3>{{lastreviews[i]['stars']}}<span class="glyphicon glyphicon-star"></span></h3>
-        <p class="review-text">{{lastreviews[i]['review']}}</p>
-        <small class="review-date">{{lastreviews[i]['date']}}</small>
-      </div>
+          <div class="review">{{lastreviews[i]['review']}}</div>
+          <div class="date">{{lastreviews[i]['date']}}</div>
+        </div>
 
+      </div>
     </div>
-  </div>
   {% endfor %}
 </div>
+
 {% endblock %}

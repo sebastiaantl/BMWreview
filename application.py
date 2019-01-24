@@ -47,6 +47,7 @@ def homepage():
         lastreviews.append(lastcars[i])
     highestrated = db.execute("SELECT Make, Model, Generation, stars FROM data ORDER BY stars DESC LIMIT 3")
     return render_template("homepage2.html", lastreviews = lastreviews, highestrated = highestrated)
+
 @app.route("/profile")
 @login_required
 def profile():
