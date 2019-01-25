@@ -7,7 +7,7 @@
 
 <div class="container">
 	<div class="col-md-9">
-        <p class="search-results-count"><h2>You searched for: {{a}}, there are {{resultsnumber}} matches found!</h2></p>
+        <div class="favourites-header">You searched for: {{a}}, there are {{resultsnumber}} matches found!</div>
 
         <div class="container">
         	<div class="row">
@@ -52,23 +52,13 @@
 
 
         {% for x in results %}
-        <section class="search-result-item">
-            <a class="image-link" href="#"><img class="image" src="http://bootdey.com/img/Content/avatar/avatar1.png">
-            </a>
-            <div class="search-result-item-body">
-                <div class="row">
-                    <div class="col-sm-6">
-                        <h4 class="search-result-item-heading"><a href="/carpage?id={{x['id']}}">{{x['Make']}}, {{x['Model']}},{{x['Generation']}}, {{x['id']}}</a></h4>
-                        <p class="description">Specs enzo</p>
-                    </div>
-                    <div class="col-sm-3 text-align-center">
-                        <p class="value3 mt-sm">$9, 700</p>
-                        <a class="btn btn-primary btn-info btn-sm" href="#">Learn More</a>
-                    </div>
-                </div>
-            </div>
+        <section class="faves-card">
+          <a href="#"><img class="pic" src="http://bootdey.com/img/Content/avatar/avatar1.png"></a>
+          <div class="header"><a href="/carpage?id={{x['id']}}">{{x['Make']}} {{x['Model']}} {{x['Generation']}}</a></div><br/>
+          <div class="description">specs</div>
         </section>
         {% endfor %}
+
     </div>
 </div>
 {% endblock %}

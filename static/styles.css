@@ -129,7 +129,7 @@ body{
     font-size: 30px;
 }
 
-.faved-card .description{
+.faves-card .description{
     float: left;
     margin-top: 4px;
     font-size: 13px;
