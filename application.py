@@ -232,6 +232,9 @@ def carpage():
     generation = header[0]["Generation"]
     startyear = header[0]["Year_from_Generation"]
     endyear = header[0]["Year_to_Generation"]
+    reviews = db.execute("SELECT user_id, stars, review, date FROM reviews WHERE car_id = :car_id", car_id = id)
+    userid = reviews[0]["user_id"]
+    username = db.execute("SELECT username FROM users WHERE id = :id", id = userid)
     # insert review into database
     if request.method == "POST":
         stars = request.form.get("rate")
@@ -247,9 +250,9 @@ def carpage():
         grade = total_grade/total_number_grades
         print (grade)
         db.execute("UPDATE data SET stars= :grade WHERE id= :id", grade=grade, id=id)
-        return render_template("carpage.html", header = header, brand = brand, model = model, generation = generation, startyear = startyear, endyear = endyear, id=id)
+        return render_template("carpage.html", header = header, brand = brand, model = model, generation = generation, startyear = startyear, endyear = endyear, id=id, reviews = reviews)
     else:
-        return render_template("carpage.html", header = header, brand = brand, model = model, generation = generation, startyear = startyear, endyear = endyear, id=id)
+        return render_template("carpage.html", header = header, brand = brand, model = model, generation = generation, startyear = startyear, endyear = endyear, id=id, reviews = reviews)
 
 @app.route("/update_avatar", methods=["GET", "POST"])
 def update_avatar():
