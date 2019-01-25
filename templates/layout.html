@@ -1,37 +1,44 @@
 <!DOCTYPE html>
+<html lang="en">
 <head>
-  <title>BMWreviews</title>
+  <title>BMW reviews</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}"/>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  <link href="{{ url_for('static', filename='styles.css') }}" rel="stylesheet"/>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 </head>
+
 <body>
-
-<nav class="navbar navbar-default">
+<nav class="navbar navbar-inverse" style="position">
   <div class="container-fluid">
-      <li class="navbar-left">
-        <a href="{{ url_for('homepage') }}"><span class="glyphicon glyphicon-cars"></span>Home</a>
-      </li>
-
-      <li class="navbar-right">
-        <a href="{{ url_for('profile') }}"><span class="glyphicon glyphicon-user"></span> Profile</a>
-        <a href="{{ url_for('favourites') }}"><span class="glyphicon glyphicon-heart"></span> Favourites</a>
-
+    <div class="navbar-header">
+      <a class="navbar-brand" href="{{ url_for('homepage') }}">BMW reviews</a>
+    </div>
+    <ul class="nav navbar-nav navbar-center">
+      <form class="navbar-form navbar-left" action="search">
         <div class="form-group">
-            <form class="form-inline" method="GET" action="search">
-              <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-              <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-            </form>
+          <input type="text" class="form-control" placeholder="Search a BMW" name="query">
         </div>
-      </li>
+        <button type="submit" class="btn btn-default">Search</button>
+      </form>
     </ul>
-</nav>
-<main>
-  {%block main%}{%endblock%}
 
-</main>
+    {% if session.get("user_id") != None %}
+    <ul class="nav navbar-nav navbar-right">
+      <li><a href="{{ url_for('logout') }}"><span class="glyphicon glyphicon-log-out"></span> Log out</a></li>
+      <li><a href="{{ url_for('profile') }}"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
+      <li><a href="{{ url_for('favourites') }}"><span class="glyphicon glyphicon-heart"></span> Favourites</a></li>
+    </ul>
+    {% else %}
+    <ul class="nav navbar-nav navbar-right">
+      <li><a href="{{ url_for('login') }}"><span class="glyphicon glyphicon-user"></span> Log in</a></li>
+    </ul>
+    {% endif %}
+
+  </div>
+</nav>
+  {%block main%}{%endblock%}
 </body>
 </html>
