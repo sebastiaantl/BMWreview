@@ -1,13 +1,63 @@
-{% extends "layout2.html" %}
+{% extends "layout.html" %}
 {% block title %}
-    Filter
+    Search Result
 {% endblock %}
 
 {% block main %}
-<center>
-    {% for x in filtered %}
-    <a href="/carpage?id={{x['id']}}">{{x['Make']}}, {{x['Model']}},{{x['Generation']}},{{x['id']}}</a><br>
-    {% endfor %}
-    {{error}}
-</center>
+
+<div class="container">
+	<div class="col-md-9">
+
+        <div class="container">
+        	<div class="row">
+                <div id="filter-panel" class="collapse filter-panel">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <form class="form-inline" role="form" method="GET" action="filter">
+                                <div class="form-group">
+                                    <label class="filter-col" style="margin-right:0;" for="pref-perpage">Number of seats: </label>
+                                    <select name="seats" class="form-control">
+                                        <option selected value=""> -- select number of seats -- </option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                    </select>
+                                </div> <!-- form group [rows] -->
+
+                                <div class="form-group">
+                                    <label class="filter-col" style="margin-right:0;" for="pref-perpage">Engine type: </label>
+                                    <select name="enginetype" class="form-control">
+                                        <option selected value=""> -- select engine type -- </option>
+                                        <option value="Disel">Disel</option>
+                                        <option value="Gasoline">Gasoline</option>
+                                        <option value="Hybrid">Hybrid</option>
+                                        <option  value="Electric">Electric</option>
+                                    </select>
+                                </div> <!-- form group [rows] -->
+
+                                <button type="submit" class="btn btn-default filter-col">
+                                    <span class="glyphicon glyphicon-filter"></span> Filter
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#filter-panel">
+                    <span class="glyphicon glyphicon-cog"></span> Advanced Search
+                </button>
+        	</div>
+        </div>
+
+
+        {% for x in filtered %}
+        <section class="faves-card">
+          <a href="#"><img class="pic" src="http://bootdey.com/img/Content/avatar/avatar1.png"></a>
+          <div class="header"><a href="/carpage?id={{x['id']}}">{{x['Make']}} {{x['Model']}} {{x['Generation']}}</a></div><br/>
+          <div class="description">specs</div>
+        </section>
+        {% endfor %}
+
+    </div>
+</div>
 {% endblock %}

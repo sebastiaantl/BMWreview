@@ -46,7 +46,7 @@ def homepage():
     for i in range(len(lastreviews)):
         lastreviews.append(lastcars[i])
     highestrated = db.execute("SELECT Make, Model, Generation, stars FROM data ORDER BY stars DESC LIMIT 3")
-    return render_template("homepage2.html", lastreviews = lastreviews, highestrated = highestrated)
+    return render_template("homepage.html", lastreviews = lastreviews, highestrated = highestrated)
 
 @app.route("/profile")
 @login_required
@@ -65,7 +65,7 @@ def profile():
     carlist.reverse()
     carids.reverse()
     avatar = db.execute("SELECT avatar FROM users WHERE id= :id", id = session['user_id'])
-    return render_template("profile2.html", username = username, bio = bio, reviews = reviews, carlist=carlist, length=len(carlist), carids=carids, avatar = avatar)
+    return render_template("profile.html", username = username, bio = bio, reviews = reviews, carlist=carlist, length=len(carlist), carids=carids, avatar = avatar)
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -132,7 +132,7 @@ def favourites():
         carslist.append(db.execute("SELECT Make, Model, Generation FROM data WHERE id= :car", car=x))
     length = len(carslist)
 
-    return render_template("favourites2.html", carslist = carslist, length=length, faves = faves)
+    return render_template("favourites.html", carslist = carslist, length=length, faves = faves)
 
 
 @app.route("/register", methods=["GET", "POST"])
@@ -193,7 +193,7 @@ def search():
     thequery = a
     results = db.execute("SELECT Make, Model, Generation, id FROM data WHERE upper(Model) = :a UNION ALL SELECT Make, Model, Generation,id FROM data WHERE upper(Generation) =:b", a=a.upper(), b=a.upper())
     resultsnumber = len(results)
-    return render_template("searchresult2.html", a=a, results=results, resultsnumber=resultsnumber)
+    return render_template("searchresult.html", a=a, results=results, resultsnumber=resultsnumber)
 
 
 @app.route("/filter")
@@ -220,7 +220,7 @@ def filter():
                 filtered = db.execute("SELECT Make,Model,Generation,id FROM data WHERE upper(Model) = :model AND Number_of_seater = :seats AND Engine_type= :enginetype", model=model.upper(), seats=seats, enginetype=enginetype)
     if len(filtered) == 0:
         error= "No cars found!"
-    return render_template("filter2.html", seats = seats, thequery = thequery, filtered = filtered, error=error, results=results)
+    return render_template("filter.html", seats = seats, thequery = thequery, filtered = filtered, error=error, results=results)
 
 @app.route("/carpage", methods=["GET", "POST"])
 def carpage():
