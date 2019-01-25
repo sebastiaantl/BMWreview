@@ -201,6 +201,82 @@ body{
     margin-bottom: 25px;
 }
 
+.makereview{
+    opacity: 0.9;
+    display: inline-block;
+    margin-top: 30px;
+    background-color: #fff;
+    border-radius: 5px;
+    width: 85%;
+    height: 250px;
+    box-shadow: 1px 1px 5px #343a40;
+}
+
+.makereview .rating{
+    border-radius: 5px;
+    border: none;
+    text-align: center;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    width: 8%;
+    height: 40px;
+    color:#ffffff;
+    background-color:#7a7a7a;
+}
+
+.makereview .header{
+    color: #000000;
+    font-size: 20px;
+}
+
+.makereview .caption{
+    width: 90%;
+    border-radius: 5px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.makereview .submit-review{
+    border-radius: 5px;
+    border: none;
+    background-color: #7a7a7a;
+    color: #ffffff;
+    width: 20%;
+    height: 40px;
+    font-size: 20px;
+}
+
+.carpage-header{
+    font-size: 60px;
+    color: #ffffff;
+    opacity: 0.9;
+}
+
+.carspecs{
+    opacity: 0.9;
+    display: inline-block;
+    background-color: #fff;
+    border-radius: 5px;
+    width: 35%;
+    height: 250px;
+    box-shadow: 1px 1px 5px #343a40;
+    margin-right: 25px;
+}
+
+.category{
+    float: left;
+    font-size: 20px;
+    color: #000000;
+    margin-bottom: 5px;
+}
+
+.spec{
+    float: right;
+    font-size: 20px;
+    color: #515151;
+    margin-bottom: 5px;
+}
+
 .login-form .form-control {
   background: #f7f7f7 none repeat scroll 0 0;
   border: 1px solid #d4d4d4;

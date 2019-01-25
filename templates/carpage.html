@@ -5,115 +5,81 @@
 {% endblock %}
 
 {% block main %}
-    <center>
-    <p>
-        <h1 class="h1">{{brand}} {{model}} {{generation}} {{startyear}}-{{endyear}}</h1>
-    </p>
-    <p>
-    <div id="mycarousel" class="carousel slide" data-ride="carousel">
-  <ol class="carousel-indicators">
-    <li data-target="#mycarousel" data-slide-to="0" class="active"></li>
-    <li data-target="#mycarousel" data-slide-to="1"></li>
-    <li data-target="#mycarousel" data-slide-to="2"></li>
-  </ol>
-  <div class="carousel-inner">
-    <div class="item active">
-      <img src="static/auto1.jpg" alt="First slide">
+<center>
+
+<div class="carpage-header">{{brand}} {{model}} {{generation}} {{startyear}}-{{endyear}}</div>
+
+
+<div class="row">
+  <div class="col-md-12">
+
+
+    <div class="carspecs">
+
+      <ul class="list-group">
+        <li class="list-group-item text-right"><span class="pull-left"><strong>Model</strong></span> {{ model }}</li>
+        <li class="list-group-item text-right"><span class="pull-left"><strong>Generation</strong></span> {{ generation }}</li>
+        <li class="list-group-item text-right"><span class="pull-left"><strong>From - To</strong></span> {{ startyear }} - {{ endyear }}</li>
+      </ul>
+
     </div>
-    <div class="item">
-      <img src="static/auto1.jpg" alt="Second slide">
+
+    <div class="carspecs">
+
+      <ul class="list-group">
+        <li class="list-group-item text-right"><span class="pull-left"><strong>Model</strong></span> {{ model }}</li>
+        <li class="list-group-item text-right"><span class="pull-left"><strong>Generation</strong></span> {{ generation }}</li>
+        <li class="list-group-item text-right"><span class="pull-left"><strong>From - To</strong></span> {{ startyear }} - {{ endyear }}</li>
+      </ul>
+
     </div>
-    <div class="item">
-      <img src="static/auto1.jpg" alt="Third slide">
-    </div>
+
   </div>
-  <a class="left carousel-control" href="#mycarousel" role="button" data-slide="prev">
-    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-  </a>
-  <a class="right carousel-control" href="#mycarousel" role="button" data-slide="next">
-    <span class="glyphicon glyphicon-chevron-right"></span>
-  </a>
 </div>
-    </p>
-    <p>
-      <form action="/favourites?id={{id}}" method="post">
-      <button type="submit" class="btn btn-danger">Favourite</button>
-      </form>
-        <h1 class="h1">Specifications:</h1>
-        <table class="table table-bordered">
-          <tbody>
-            {% for line in header %}
-            <tr>
-              <th scope="row">Model</th>
-              <td>{{ line.Model }}</td>
-            </tr>
-            <tr>
-              <th scope="row">Generation</th>
-              <td>{{ line.Generation }}</td>
-            </tr>
-            <tr>
-              <th scope="row">Year_from_Generation</th>
-              <td>{{ line.Year_from_Generation }}</td>
-            </tr>
-            <tr>
-              <th scope="row">Year_to_Generation</th>
-              <td>{{ line.Year_to_Generation }}</td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-    </p>
-    <p>
-      <h1 class="h1">Make a Review:</h1>
-      <form action="/carpage?id={{id}}" method="post">
-        <div class="form-group">
-          <label for="rate">Rate car with star:</label>
-          <select class="form-control" id="rate" type="number" name="rate">
-            <option>1</option>
-            <option>2</option>
-            <option>3</option>
-            <option>4</option>
-            <option>5</option>
-          </select>
+
+
+<form action="/carpage?id={{id}}" method="post">
+
+  <div class="makereview">
+
+    <div class="header">Give this car a star rating:</div>
+
+      <select class="rating" id="rate" type="text" name="rate">
+        <option value="1">★☆☆☆☆</option>
+        <option value="2">★★☆☆☆</option>
+        <option value="3">★★★☆☆</option>
+        <option value="4">★★★★☆</option>
+        <option value="5">★★★★★</option>
+      </select>
+
+      <div class="header">Add a comment:</div>
+
+      <div class="caption">
+        <textarea class="form-control" id="comment" name="comment"></textarea>
+      </div>
+
+      <button type="submit" class="submit-review">Send review</button>
+  </div>
+</form>
+
+<div class="col-md-12">
+<div class="favourites-header">Reviews</div>
+  {% for i in range(length) %}
+    <div class="review-card">
+        <div class="row">
+
+            <div class="col-md-2">
+              <img class="pic" src="https://bootdey.com/img/Content/avatar/avatar1.png">
+              <div class="reviewer">By {{userlist[i]['username']}}</div>
+            </div>
+            <div class="col-md-10">
+
+              <div class="review">{{reviews[i]['review']}}</div>
+              <div class="date">{{reviews[i]['date']}}</div>
+            </div>
+
         </div>
-        <div class="form-group">
-          <label for="comment">Add comment:</label>
-          <textarea class="form-control" id="comment" name="comment" rows="3"></textarea>
-        </div>
-        <button type="submit" class="btn btn-primary mb-2">Send review</button>
-      </form>
-    </p>
     </div>
-        <h3>Reviews</h3>
-        <p>
-        <table class="table table-bordered" style="max-width: 50%">
-          <tbody>
-            {% for i in range (0,length) %}
-            <tr>
-              <th scope="row">Stars</th>
-              <td>{{reviews[i]['stars']}}</td>
-            </tr>
-            <tr>
-              <th scope="row">Comment</th>
-              <td>{{reviews[i]['review']}}</td>
-            </tr>
-            <tr>
-              <th scope="row">Date</th>
-              <td>{{reviews[i]['date']}}</td>
-            </tr>
-            <tr>
-              <th scope="row">User</th>
-              <td>{{userlist[i][0]['username']}}</td>
-            </tr>
-            <tr style="height: 3em;"></tr>
-            {% endfor %}
-          </tbody>
-        </table>
-        </center>
-    </p>
-    </div>
-
-
-
-    </center>
+  {% endfor %}
+</center>
 {% endblock %}
