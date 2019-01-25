@@ -233,8 +233,9 @@ def carpage():
     startyear = header[0]["Year_from_Generation"]
     endyear = header[0]["Year_to_Generation"]
     reviews = db.execute("SELECT user_id, stars, review, date FROM reviews WHERE car_id = :car_id", car_id = id)
-    userid = reviews[0]["user_id"]
-    username = db.execute("SELECT username FROM users WHERE id = :id", id = userid)
+    for x in reviews:
+        userid = reviews[0]["user_id"]
+        username = db.execute("SELECT username FROM users WHERE id = :id", id = userid)
     # insert review into database
     if request.method == "POST":
         stars = request.form.get("rate")
