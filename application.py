@@ -45,7 +45,7 @@ def homepage():
         lastcars.append(db.execute("SELECT Make, Model, Generation from data WHERE id = :id", id= ids))
     for i in range(len(lastreviews)):
         lastreviews.append(lastcars[i])
-    highestrated = db.execute("SELECT Make, Model, Generation, stars FROM data ORDER BY stars DESC LIMIT 3")
+    highestrated = db.execute("SELECT Make, Model, Generation, stars, id FROM data ORDER BY stars DESC LIMIT 3")
     return render_template("homepage.html", lastreviews = lastreviews, highestrated = highestrated)
 
 @app.route("/profile")
@@ -129,7 +129,7 @@ def favourites():
         cars.append(i['car_id'])
     carslist = []
     for x in cars:
-        carslist.append(db.execute("SELECT Make, Model, Generation FROM data WHERE id= :car", car=x))
+        carslist.append(db.execute("SELECT Make, Model, Generation, id FROM data WHERE id= :car", car=x))
     length = len(carslist)
 
     return render_template("favourites.html", carslist = carslist, length=length, faves = faves)

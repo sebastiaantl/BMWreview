@@ -19,7 +19,7 @@
             <div class="stars"><span class="glyphicon glyphicon-star"></span></div>
           {% endfor %}
 
-          <div class="header"><a href="/carpage?id={{i['id']}}">{{highestrated[i]['Make']}} {{highestrated[i]['Model']}} {{highestrated[i]['Generation']}}</a></div><br/>
+          <div class="header"><a href="/carpage?id={{highestrated[i]['id']}}">{{highestrated[i]['Make']}} {{highestrated[i]['Model']}} {{highestrated[i]['Generation']}}</a></div><br/>
 
           <div class="description">specs</div>
         </section>
@@ -37,7 +37,7 @@
           <div class="reviewer">By username</div>
         </div>
         <div class="col-md-10">
-          <div class="header"><a href="#"> {{lastreviews[9-i][0]['Make']}} {{lastreviews[9-i][0]['Model']}} {{lastreviews[9-i][0]['Generation']}}</a></div>
+          <div class="header"><a href="/carpage?id={{lastreviews[i]['car_id']}}"> {{lastreviews[9-i][0]['Make']}} {{lastreviews[9-i][0]['Model']}} {{lastreviews[9-i][0]['Generation']}}</a></div>
             {% for i in range (0,5 - lastreviews[i]['stars']) %}
               <div class="stars"><span class="glyphicon glyphicon-star-empty"></span></div>
             {% endfor %}
