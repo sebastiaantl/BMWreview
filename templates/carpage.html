@@ -83,6 +83,35 @@
         <button type="submit" class="btn btn-primary mb-2">Send review</button>
       </form>
     </p>
+    </div>
+        <h3>Reviews</h3>
+        <p>
+        <table class="table table-bordered" style="max-width: 50%">
+          <tbody>
+            {% for i in range (0,length) %}
+            <tr>
+              <th scope="row">Stars</th>
+              <td>{{reviews[i]['stars']}}</td>
+            </tr>
+            <tr>
+              <th scope="row">Comment</th>
+              <td>{{reviews[i]['review']}}</td>
+            </tr>
+            <tr>
+              <th scope="row">Date</th>
+              <td>{{reviews[i]['date']}}</td>
+            </tr>
+            <tr>
+              <th scope="row">User</th>
+              <td>{{userlist[i][0]['username']}}</td>
+            </tr>
+            <tr style="height: 3em;"></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        </center>
+    </p>
+    </div>
 
 
 
