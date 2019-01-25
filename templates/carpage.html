@@ -88,25 +88,23 @@
         <p>
         <table class="table table-bordered" style="max-width: 50%">
           <tbody>
-            {% for i in reviews %}
+            {% for i in range (0,length) %}
             <tr>
               <th scope="row">Stars</th>
-              <td>{{i.stars}}</td>
+              <td>{{reviews[i]['stars']}}</td>
             </tr>
             <tr>
               <th scope="row">Comment</th>
-              <td>{{i.review}}</td>
+              <td>{{reviews[i]['review']}}</td>
             </tr>
             <tr>
               <th scope="row">Date</th>
-              <td>{{i.date}}</td>
+              <td>{{reviews[i]['date']}}</td>
             </tr>
-              {% for line in username %}
             <tr>
               <th scope="row">User</th>
-              <td>{{line.username}}</td>
+              <td>{{userlist[i][0]['username']}}</td>
             </tr>
-              {% endfor %}
             <tr style="height: 3em;"></tr>
             {% endfor %}
           </tbody>
