@@ -12,10 +12,19 @@
         {% for x in range (0,length) %}
         <section class="faves-card">
 
-          <a href="#"><img class="pic" src="http://bootdey.com/img/Content/avatar/avatar1.png"></a>
+            <a href="#"><img class="pic" src="http://bootdey.com/img/Content/avatar/avatar1.png"></a>
 
-          <div class="header"><a href="/carpage?id={{carslist[x][0]['id']}}">{{carslist[x][0]['Make']}} {{carslist[x][0]['Model']}} {{carslist[x][0]['Generation']}}</a></div><br/>
-          <div class="description">specs</div>
+            <div class="description">
+              <ul class="list-group">
+                <li class="list-group-item text-muted">{{carslist[x][0]['Make']}} {{carslist[x][0]['Model']}} {{carslist[x][0]['Generation']}}<i class="fa fa-dashboard fa-1x"></i></li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong>From - To</strong></span> {{carslist[x][0]['Year_from_Generation']}} - {{carslist[x][0]['Year_to_Generation']}}</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong>Serie</strong></span> {{carslist[x][0]['Serie']}}</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong>Trim</strong></span> {{carslist[x][0]['Trim']}}</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong>Seats</strong></span> {{carslist[x][0]['Number_of_seater']}}</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong>Engine type</strong></span> {{carslist[x][0]['Engine_type']}}</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong>Max speed</strong></span> {{carslist[x][0]['Max_speed_kmh']}} kmh</li>
+              </ul>
+            </div>
         </section>
         {% endfor %}
     </div>

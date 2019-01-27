@@ -133,7 +133,7 @@ def favourites():
         cars.append(i['car_id'])
     carslist = []
     for x in cars:
-        carslist.append(db.execute("SELECT Make, Model, Generation, id FROM data WHERE id= :car", car=x))
+        carslist.append(db.execute("SELECT Make, Model, Generation, id, Year_from_Generation, Year_to_Generation, Serie, Trim, Number_of_seater, Engine_type, Max_speed_kmh FROM data WHERE id= :car", car=x))
     length = len(carslist)
 
     return render_template("favourites.html", carslist = carslist, length=length, faves = faves)
