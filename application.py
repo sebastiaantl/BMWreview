@@ -35,8 +35,11 @@ db = SQL("sqlite:///bmwreview.db")
 def homepage():
     # select last five results and get corresponding car data
     lastreviews = db.execute("SELECT * FROM reviews ORDER BY id DESC LIMIT 5")
-    lastcarids = []
     print(lastreviews)
+    for x in range(len(lastreviews)):
+        users = (db.execute("SELECT username FROM users WHERE id = :id", id = lastreviews[x]['user_id']))
+    print(users)
+    lastcarids = []
     for x in lastreviews:
         lastcarids.append(x['car_id'])
     lastcarids.reverse()
@@ -45,8 +48,8 @@ def homepage():
         lastcars.append(db.execute("SELECT Make, Model, Generation from data WHERE id = :id", id= ids))
     for i in range(len(lastreviews)):
         lastreviews.append(lastcars[i])
-    highestrated = db.execute("SELECT Make, Model, Generation, stars, id FROM data ORDER BY stars DESC LIMIT 3")
-    return render_template("homepage.html", lastreviews = lastreviews, highestrated = highestrated)
+    highestrated = db.execute("SELECT Make, Model, Generation, stars, id,  Year_from_Generation, Year_to_Generation, Serie, Trim, Number_of_seater, Engine_type, Max_speed_kmh FROM data ORDER BY stars DESC LIMIT 3")
+    return render_template("homepage.html", lastreviews = lastreviews, highestrated = highestrated, users = users)
 
 @app.route("/profile")
 @login_required
@@ -133,7 +136,7 @@ def favourites():
         cars.append(i['car_id'])
     carslist = []
     for x in cars:
-        carslist.append(db.execute("SELECT Make, Model, Generation, id, Year_from_Generation, Year_to_Generation, Serie, Trim, Number_of_seater, Engine_type, Max_speed_kmh FROM data WHERE id= :car", car=x))
+        carslist.append(db.execute("SELECT Make, Model, Generation, id, Year_from_Generation, Year_to_Generation, Serie, Trim, Number_of_seater, Engine_type, Max_speed_kmh, stars FROM data WHERE id= :car", car=x))
     length = len(carslist)
 
     return render_template("favourites.html", carslist = carslist, length=length, faves = faves)

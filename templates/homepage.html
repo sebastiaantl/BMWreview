@@ -19,9 +19,17 @@
             <div class="stars"><span class="glyphicon glyphicon-star"></span></div>
           {% endfor %}
 
-          <div class="header"><a href="/carpage?id={{highestrated[i]['id']}}">{{highestrated[i]['Make']}} {{highestrated[i]['Model']}} {{highestrated[i]['Generation']}}</a></div><br/>
-
-          <div class="description">specs</div>
+          <div class="description">
+            <ul class="list-group">
+              <li class="list-group-item text-muted"><a href="/carpage?id={{highestrated[i]['id']}}">{{highestrated[i]['Make']}} {{highestrated[i]['Model']}} {{highestrated[i]['Generation']}}</a><i class="fa fa-dashboard fa-1x"></i></li>
+              <li class="list-group-item text-right"><span class="pull-left"><strong>From - To</strong></span> {{highestrated[i]['Year_from_Generation']}} - {{highestrated[i]['Year_to_Generation']}}</li>
+              <li class="list-group-item text-right"><span class="pull-left"><strong>Serie</strong></span> {{highestrated[i]['Serie']}}</li>
+              <li class="list-group-item text-right"><span class="pull-left"><strong>Trim</strong></span> {{highestrated[i]['Trim']}}</li>
+              <li class="list-group-item text-right"><span class="pull-left"><strong>Seats</strong></span> {{highestrated[i]['Number_of_seater']}}</li>
+              <li class="list-group-item text-right"><span class="pull-left"><strong>Engine type</strong></span> {{highestrated[i]['Engine_type']}}</li>
+              <li class="list-group-item text-right"><span class="pull-left"><strong>Max speed</strong></span> {{highestrated[i]['Max_speed_kmh']}} kmh</li>
+            </ul>
+          </div>
         </section>
         {% endfor %}
 </div>
@@ -34,7 +42,7 @@
       <div class="review-card">
         <div class="col-md-2">
           <img class="pic" src="https://bootdey.com/img/Content/avatar/avatar1.png">
-          <div class="reviewer">By username</div>
+          <div class="reviewer">By username?</div>
         </div>
         <div class="col-md-10">
           <div class="header"><a href="/carpage?id={{lastreviews[i]['car_id']}}"> {{lastreviews[9-i][0]['Make']}} {{lastreviews[9-i][0]['Model']}} {{lastreviews[9-i][0]['Generation']}}</a></div>
