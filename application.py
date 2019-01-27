@@ -19,9 +19,6 @@ if app.config["DEBUG"]:
         response.headers["Pragma"] = "no-cache"
         return response
 
-# custom filter
-app.jinja_env.filters["usd"] = usd
-
 # configure session to use filesystem (instead of signed cookies)
 app.config["SESSION_FILE_DIR"] = mkdtemp()
 app.config["SESSION_PERMANENT"] = False
@@ -251,6 +248,8 @@ def carpage():
     startyear = header[0]["Year_from_Generation"]
     endyear = header[0]["Year_to_Generation"]
     stars = db.execute("SELECT stars FROM reviews WHERE car_id = :car_id", car_id = id)
+    specs = db.execute("SELECT Serie, Trim, Number_of_seater, Engine_type, Max_speed_kmh, Curb_weight_kg, Gearbox_type, Fuel_tank_capacity_litre, Acceleration_0100_kmh_second, Engine_power_bhp, Number_of_cylinders FROM data WHERE id = :car_id", car_id = id)
+    print(specs)
     reviews = db.execute("SELECT user_id, stars, review, date FROM reviews WHERE car_id = :car_id", car_id = id)
     print(reviews)
     userlist = []
@@ -275,9 +274,9 @@ def carpage():
         grade = total_grade/total_number_grades
         print (grade)
         db.execute("UPDATE data SET stars= :grade WHERE id= :id", grade=grade, id=id)
-        return render_template("carpage.html", header = header, brand = brand, model = model, generation = generation, startyear = startyear, endyear = endyear, id=id, reviews = reviews, userlist = userlist, length = len(reviews), stars = stars)
+        return render_template("carpage.html", header = header, brand = brand, model = model, generation = generation, startyear = startyear, endyear = endyear, id=id, reviews = reviews, userlist = userlist, length = len(reviews), stars = stars, specs = specs)
     else:
-        return render_template("carpage.html", header = header, brand = brand, model = model, generation = generation, startyear = startyear, endyear = endyear, id=id, reviews = reviews, userlist = userlist, length = len(reviews), stars = stars)
+        return render_template("carpage.html", header = header, brand = brand, model = model, generation = generation, startyear = startyear, endyear = endyear, id=id, reviews = reviews, userlist = userlist, length = len(reviews), stars = stars, specs = specs)
 
 @app.route("/update_avatar", methods=["GET", "POST"])
 def update_avatar():

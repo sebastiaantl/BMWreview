@@ -7,7 +7,7 @@
 {% block main %}
 <center>
 
-<div class="carpage-header">{{brand}} {{model}} {{generation}} {{startyear}}-{{endyear}}</div>
+<div class="carpage-header">{{brand}} {{model}} {{generation}}</div>
 
 
 <div class="row">
@@ -17,9 +17,12 @@
     <div class="carspecs">
 
       <ul class="list-group">
-        <li class="list-group-item text-right"><span class="pull-left"><strong>Model</strong></span> {{ model }}</li>
-        <li class="list-group-item text-right"><span class="pull-left"><strong>Generation</strong></span> {{ generation }}</li>
+        <li class="list-group-item text-right"><span class="pull-left"><strong>Serie</strong></span> {{ specs[0]['Serie'] }}</li>
+        <li class="list-group-item text-right"><span class="pull-left"><strong>Trim</strong></span> {{ specs[0]['Trim'] }}</li>
         <li class="list-group-item text-right"><span class="pull-left"><strong>From - To</strong></span> {{ startyear }} - {{ endyear }}</li>
+        <li class="list-group-item text-right"><span class="pull-left"><strong>Seats</strong></span> {{ specs[0]['Number_of_seater'] }}</li>
+        <li class="list-group-item text-right"><span class="pull-left"><strong>Engine type</strong></span> {{ specs[0]['Engine_type'] }}</li>
+        <li class="list-group-item text-right"><span class="pull-left"><strong>Engine power bhp</strong></span> {{ specs[0]['Engine_power_bhp'] }}</li>
       </ul>
 
     </div>
@@ -27,9 +30,12 @@
     <div class="carspecs">
 
       <ul class="list-group">
-        <li class="list-group-item text-right"><span class="pull-left"><strong>Model</strong></span> {{ model }}</li>
-        <li class="list-group-item text-right"><span class="pull-left"><strong>Generation</strong></span> {{ generation }}</li>
-        <li class="list-group-item text-right"><span class="pull-left"><strong>From - To</strong></span> {{ startyear }} - {{ endyear }}</li>
+        <li class="list-group-item text-right"><span class="pull-left"><strong>Max speed</strong></span> {{ specs[0]['Max_speed_kmh'] }} kmh</li>
+        <li class="list-group-item text-right"><span class="pull-left"><strong>Curb weight</strong></span> {{ specs[0]['Curb_weight_kg'] }} kg</li>
+        <li class="list-group-item text-right"><span class="pull-left"><strong>Gearbox type</strong></span> {{ specs[0]['Gearbox_type'] }}</li>
+        <li class="list-group-item text-right"><span class="pull-left"><strong>Fuel tank capacity</strong></span> {{ specs[0]['Fuel_tank_capacity_litre'] }} L</li>
+        <li class="list-group-item text-right"><span class="pull-left"><strong>0-100</strong></span> {{ specs[0]['Acceleration_0100_kmh_second'] }} seconds</li>
+        <li class="list-group-item text-right"><span class="pull-left"><strong>Cylinders</strong></span> {{ specs[0]['Number_of_cylinders'] }}</li>
       </ul>
 
     </div>
@@ -64,6 +70,13 @@
 
 <div class="col-md-12">
 <div class="favourites-header">Reviews</div>
+
+  {% if length == 0 %}
+    <div class="no_reviews">
+      <div class="text">There are no reviews on this car yet, be the first!</div>
+    </div>
+  {% endif %}
+
   {% for i in range(length) %}
     <div class="review-card">
         <div class="row">
