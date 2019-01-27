@@ -143,6 +143,8 @@ body{
 }
 
 .profile-pic{
+    float: right;
+    margin-right: 10px;
     height: 200px;
     width: 200px;
     border-radius: 100%;
@@ -333,4 +335,53 @@ body{
 .filter-col{
     padding-left:10px;
     padding-right:10px;
+}
+
+.uploadpic{
+  border-radius: 5px;
+  opacity: 0.9;
+  margin-top:10px;
+  margin-bottom: 10px;
+  background: #ffffff;
+  border-color: #ffffff;
+  color: #000000;
+  width: 40%;
+  height: 100px;
+}
+
+.form{
+    border-radius: 5px;
+    background-color: #474747;
+    border: none;
+    color: #ffffff;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 20px;
+}
+
+.button{
+    border-radius: 5px;
+    background-color: #474747;
+    color: #ffffff;
+    border: none;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 60px;
+}
+
+.biobox{
+    opacity: 0.9;
+    display: inline-block;
+    background-color: #fff;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.infobox{
+    opacity: 0.9;
+    display: inline-block;
+    background-color: #fff;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    width: 100%;
 }

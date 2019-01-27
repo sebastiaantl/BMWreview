@@ -52,11 +52,15 @@ def homepage():
 @login_required
 def profile():
 
-    bio = db.execute("SELECT bio FROM users WHERE id = :id", id = session["user_id"])
-    username = db.execute("SELECT username FROM users WHERE id = :id", id = session["user_id"])[0]['username']
-    reviews = db.execute("SELECT car_id, stars, review, date FROM reviews WHERE user_id = :user_id", user_id = session["user_id"])
+    current_id = session["user_id"]
+    bio = db.execute("SELECT bio FROM users WHERE id = :id", id = current_id)
+    username = db.execute("SELECT username FROM users WHERE id = :id", id = current_id)[0]['username']
+    reviews = db.execute("SELECT car_id, stars, review, date FROM reviews WHERE user_id = :user_id", user_id = current_id)
+    fave = db.execute("SELECT car_id FROM favourites WHERE user_id = :user_id", user_id = current_id)
+    favescount = len(fave)
     carlist = []
     carids = []
+    reviewcount = len(reviews)
     for review in reviews:
         car_id = review['car_id']
         carids.append(car_id)
@@ -65,7 +69,7 @@ def profile():
     carlist.reverse()
     carids.reverse()
     avatar = db.execute("SELECT avatar FROM users WHERE id= :id", id = session['user_id'])
-    return render_template("profile.html", username = username, bio = bio, reviews = reviews, carlist=carlist, length=len(carlist), carids=carids, avatar = avatar)
+    return render_template("profile.html", username = username, bio = bio, reviews = reviews, carlist=carlist, length=len(carlist), carids=carids, avatar = avatar, reviewcount = reviewcount, favescount = favescount)
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
