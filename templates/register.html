@@ -5,6 +5,11 @@
 {% endblock %}
 
 {% block main %}
+
+    {% if error != 0 %}
+        <center><div class="error"> {{ error }}</div></center>
+    {% endif %}
+
     <div class="container">
     <div class="login-form">
     <div class="main-div">

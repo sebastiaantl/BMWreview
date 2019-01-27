@@ -384,3 +384,15 @@ body{
     margin-bottom: 20px;
     width: 100%;
 }
+
+.error{
+    margin:auto;
+    opacity: 0.9;
+    display: inline-block;
+    color: #ffffff;
+    background-color: #f74a33;
+    border-radius: 5px;
+    width: 35%;
+    height: 60px;
+    font-size: 25px;
+}
