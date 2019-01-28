@@ -63,3 +63,22 @@
     <span class="glyphicon glyphicon-chevron-right"></span>
   </a>
 </div>
+
+<button class="button" action="/update_avatar">Update Avatar</button>
+
+                <form action="/update_avatar" method="post" enctype="multipart/form-data">
+                    <input id="avatar_url" class="form" type="file" onchange="form.submit()" placeholder="Enter"></input>
+                    <center><label for="avatar_url" class="button"> Submit image</label></center>
+                </form>
+
+                <div class="col-sm-6">
+
+            <img class="profile-pic" src="uploads/caricon.jpg" >
+                </div>
+
+<div class="uploadpic">
+                <form action="/update_avatar" method="post" enctype="multipart/form-data">
+                    <input type="file" name="file" id="file" class="form" onchange="form.submit()"/>
+                    <label for="file" class="button"> Submit image</label>
+                </form>
+            </div>

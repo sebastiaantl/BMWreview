@@ -4,11 +4,15 @@ from flask import request
 from flask_session import Session
 from passlib.apps import custom_app_context as pwd_context
 from tempfile import mkdtemp
+import os
 
 from helpers import *
 
 # configure application
 app = Flask(__name__)
+
+UPLOAD_FOLDER = os.path.basename('uploads')
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 # ensure responses aren't cached
 if app.config["DEBUG"]:
@@ -282,8 +286,14 @@ def carpage():
     else:
         return render_template("carpage.html", header = header, brand = brand, model = model, generation = generation, startyear = startyear, endyear = endyear, id=id, reviews = reviews, userlist = userlist, length = len(reviews), stars = stars, specs = specs)
 
-@app.route("/update_avatar", methods=["GET", "POST"])
+@app.route("/update_avatar", methods=["POST"])
 def update_avatar():
-    avatarimg = request.form.get("avatar_url")
-    db.execute("UPDATE users SET avatar = :avatarimg WHERE id = :id", avatarimg = avatarimg, id = session['user_id'])
+
+    file = request.files['file']
+    filename = str(session["user_id"]) + "_" + file.filename
+
+    f = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
+
+    file.save(f)
+
     return redirect(url_for('profile'))

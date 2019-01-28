@@ -349,23 +349,25 @@ body{
 }
 
 .form{
+    opacity: 0;
+    width: 1px;
     border-radius: 5px;
-    background-color: #474747;
+    background-color: #ffffff;
     border: none;
     color: #ffffff;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    margin-left: 20px;
+
 }
 
 .button{
     border-radius: 5px;
+    height: 40px;
+    width: 130px;
     background-color: #474747;
     color: #ffffff;
     border: none;
+    text-align: center;
     margin-top: 10px;
     margin-bottom: 10px;
-    margin-left: 60px;
 }
 
 .biobox{
