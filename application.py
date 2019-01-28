@@ -132,20 +132,58 @@ def favourites():
     user_id = session.get("user_id")
     id = request.args.get('id')
     if request.method == "POST":
-        db.execute("INSERT INTO favourites (car_id, user_id) VALUES(:car_id, :user_id)", car_id=id, user_id=user_id)
-    idresults = db.execute("SELECT car_id FROM favourites WHERE user_id = :user_id", user_id = user_id)
-    cars = []
-    faves = 0
-    for i in idresults:
-        faves = faves + 1
-        cars.append(i['car_id'])
-    carslist = []
-    for x in cars:
-        carslist.append(db.execute("SELECT Make, Model, Generation, id, Year_from_Generation, Year_to_Generation, Serie, Trim, Number_of_seater, Engine_type, Max_speed_kmh, stars FROM data WHERE id= :car", car=x))
-    length = len(carslist)
-
-    return render_template("favourites.html", carslist = carslist, length=length, faves = faves)
-
+        if not session.get("user_id"):
+            return redirect(url_for("login"))
+        rows = db.execute("SELECT car_id FROM favourites WHERE user_id = :user_id", user_id=session.get("user_id"))
+        already_favourites = []
+        for i in range(0, len(rows)):
+            favourite = rows[i]["car_id"]
+            already_favourites.append(favourite)
+        print (id)
+        id = int(id)
+        print (already_favourites)
+        print (type(id))
+        print (type(already_favourites[0]))
+        a = [1,2,3,4,5]
+        if 3 in a:
+            print (" YES")
+        if id not in already_favourites:
+            db.execute("INSERT INTO favourites (car_id, user_id) VALUES(:car_id, :user_id)", car_id=id, user_id=user_id)
+            idresults = db.execute("SELECT car_id FROM favourites WHERE user_id = :user_id", user_id = user_id)
+            cars = []
+            faves = 0
+            for i in idresults:
+                faves = faves + 1
+                cars.append(i['car_id'])
+            carslist = []
+            for x in cars:
+                carslist.append(db.execute("SELECT Make, Model, Generation, id, Year_from_Generation, Year_to_Generation, Serie, Trim, Number_of_seater, Engine_type, Max_speed_kmh, stars FROM data WHERE id= :car", car=x))
+            length = len(carslist)
+            return render_template("favourites.html", carslist = carslist, length=length, faves = faves)
+        else:
+            idresults = db.execute("SELECT car_id FROM favourites WHERE user_id = :user_id", user_id = user_id)
+            cars = []
+            faves = 0
+            for i in idresults:
+                faves = faves + 1
+                cars.append(i['car_id'])
+            carslist = []
+            for x in cars:
+                carslist.append(db.execute("SELECT Make, Model, Generation, id, Year_from_Generation, Year_to_Generation, Serie, Trim, Number_of_seater, Engine_type, Max_speed_kmh, stars FROM data WHERE id= :car", car=x))
+            length = len(carslist)
+            return render_template("favourites.html", carslist = carslist, length=length, faves = faves)
+    else:
+        idresults = db.execute("SELECT car_id FROM favourites WHERE user_id = :user_id", user_id = user_id)
+        cars = []
+        faves = 0
+        for i in idresults:
+            faves = faves + 1
+            cars.append(i['car_id'])
+        carslist = []
+        for x in cars:
+            carslist.append(db.execute("SELECT Make, Model, Generation, id, Year_from_Generation, Year_to_Generation, Serie, Trim, Number_of_seater, Engine_type, Max_speed_kmh, stars FROM data WHERE id= :car", car=x))
+        length = len(carslist)
+        return render_template("favourites.html", carslist = carslist, length=length, faves = faves)
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
