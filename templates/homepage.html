@@ -42,7 +42,7 @@
       <div class="review-card">
         <div class="col-md-2">
           <img class="pic" src="https://bootdey.com/img/Content/avatar/avatar1.png">
-          <div class="reviewer">By username?</div>
+          <div class="reviewer">By {{ userlist[i][0]['username'] }}</div>
         </div>
         <div class="col-md-10">
           <div class="header"><a href="/carpage?id={{lastreviews[i]['car_id']}}"> {{lastreviews[9-i][0]['Make']}} {{lastreviews[9-i][0]['Model']}} {{lastreviews[9-i][0]['Generation']}}</a></div>

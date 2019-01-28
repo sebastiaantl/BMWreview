@@ -33,8 +33,12 @@ def homepage():
     # select last five results and get corresponding car data
     lastreviews = db.execute("SELECT * FROM reviews ORDER BY id DESC LIMIT 5")
     print(lastreviews)
-    for x in range(len(lastreviews)):
-        users = (db.execute("SELECT username FROM users WHERE id = :id", id = lastreviews[x]['user_id']))
+    userlist = []
+    for i in lastreviews:
+        users = i['user_id']
+        username = db.execute("SELECT username FROM users WHERE id = :id", id = users)
+        userlist.append(username)
+    print("dit is wat we zoeken")
     print(users)
     lastcarids = []
     for x in lastreviews:
@@ -46,7 +50,7 @@ def homepage():
     for i in range(len(lastreviews)):
         lastreviews.append(lastcars[i])
     highestrated = db.execute("SELECT Make, Model, Generation, stars, id,  Year_from_Generation, Year_to_Generation, Serie, Trim, Number_of_seater, Engine_type, Max_speed_kmh FROM data ORDER BY stars DESC LIMIT 3")
-    return render_template("homepage.html", lastreviews = lastreviews, highestrated = highestrated, users = users)
+    return render_template("homepage.html", lastreviews = lastreviews, highestrated = highestrated, userlist = userlist)
 
 @app.route("/profile")
 @login_required
