@@ -415,3 +415,8 @@ body{
     font-size: 30px;
     vertical-align: middle;
 }
+
+.un_favourite{
+    float: right;
+    font-size: 27px;
+}

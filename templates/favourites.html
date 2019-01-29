@@ -12,7 +12,8 @@
         {% for x in range (0,length) %}
         <section class="faves-card">
 
-            <a href="#"><img class="pic" src="http://bootdey.com/img/Content/avatar/avatar1.png"></a>
+            <a href="/carpage?id={{carslist[x][0]['id']}}"><img class="pic" src="http://bootdey.com/img/Content/avatar/avatar1.png"></a>
+            <button type="button" class="un_favourite">💔</button>
 
             <div class="description">
               <ul class="list-group">
