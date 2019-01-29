@@ -155,14 +155,7 @@ def favourites():
         for i in range(0, len(rows)):
             favourite = rows[i]["car_id"]
             already_favourites.append(favourite)
-        print (id)
         id = int(id)
-        print (already_favourites)
-        print (type(id))
-        print (type(already_favourites[0]))
-        a = [1,2,3,4,5]
-        if 3 in a:
-            print (" YES")
         if id not in already_favourites:
             db.execute("INSERT INTO favourites (car_id, user_id) VALUES(:car_id, :user_id)", car_id=id, user_id=user_id)
             idresults = db.execute("SELECT car_id FROM favourites WHERE user_id = :user_id", user_id = user_id)
@@ -356,16 +349,14 @@ def update_avatar():
 @app.route("/remove_review", methods=["POST"])
 @login_required
 def remove_review():
-
+    user_id = session.get("user_id")
     id = request.args.get('id')
-    print(id)
-    db.execute("DELETE FROM reviews WHERE (id= :id)", id = id)
+    db.execute("DELETE FROM reviews WHERE (car_id= :id) AND (user_id = :user_id)", id = id, user_id = user_id)
     return redirect(url_for('profile'))
 
 @app.route("/unfavourite", methods=["POST"])
 @login_required
 def unfavourite():
-
     user_id = session.get("user_id")
     car_id = request.args.get('id')
     db.execute("DELETE FROM favourites WHERE (car_id= :car_id) AND (user_id = :user_id)", car_id = car_id, user_id = user_id)
