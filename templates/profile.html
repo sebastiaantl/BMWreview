@@ -35,9 +35,12 @@
 
         </div>
 
-        {% for i in range(0,5) %}
+        {% for i in range(0,length) %}
             <div class="profile-card">
                 <div class="row">
+                    <form action="/remove_review?id={{carids[i]}}" method="post">
+                      <button type="submit" class="undo_review">Remove</button>
+                    </form>
 
                     <div class="col-md-2">
                       <img class="pic" src="https://bootdey.com/img/Content/avatar/avatar1.png">

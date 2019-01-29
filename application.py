@@ -53,6 +53,19 @@ def homepage():
     for i in range(len(lastreviews)):
         lastreviews.append(lastcars[i])
     highestrated = db.execute("SELECT Make, Model, Generation, stars, id,  Year_from_Generation, Year_to_Generation, Serie, Trim, Number_of_seater, Engine_type, Max_speed_kmh FROM data ORDER BY stars DESC LIMIT 3")
+    carslist = db.execute("SELECT Make, Model, Generation FROM data ORDER BY id ASC")
+    # testlist = []
+    # for cars in carslist:
+    #     q = str(cars['Make'] + " " + cars['Model'] + " " + cars['Generation'])
+    #     test = str(cars['Make'] + " " + cars['Model'])
+    #     testlist.append(test)
+    # testlist = set(testlist)
+
+    # for x in testlist:
+    #     response = google_images_download.googleimagesdownload()   #class instantiation
+    #     arguments = {"keywords":x,"limit":1,"print_urls":True, "size": "medium", "format": "jpg", "prefix": x}   #creating list of arguments
+    #     paths = response.download(arguments)   #passing the arguments to the function
+    #     print(paths)   #printing absolute paths of the downloaded images
     return render_template("homepage.html", lastreviews = lastreviews, highestrated = highestrated, userlist = userlist)
 
 @app.route("/profile")
@@ -334,3 +347,21 @@ def update_avatar():
     file.save(f)
 
     return redirect(url_for('profile'))
+
+@app.route("/remove_review", methods=["POST"])
+@login_required
+def remove_review():
+
+    id = request.args.get('id')
+    db.execute("DELETE FROM reviews WHERE (id= :id)", id = id)
+    return redirect(url_for('profile'))
+
+@app.route("/unfavourite", methods=["POST"])
+@login_required
+def unfavourite():
+
+    user_id = session.get("user_id")
+    car_id = request.args.get('id')
+    db.execute("DELETE FROM favourites WHERE (car_id= :car_id) AND (user_id = :user_id)", car_id = car_id, user_id = user_id)
+    return redirect(url_for('favourites'))
+
