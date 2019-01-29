@@ -341,6 +341,7 @@ def update_avatar():
 def remove_review():
 
     id = request.args.get('id')
+    print(id)
     db.execute("DELETE FROM reviews WHERE (id= :id)", id = id)
     return redirect(url_for('profile'))
 
