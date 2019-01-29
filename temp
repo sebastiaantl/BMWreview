@@ -82,3 +82,7 @@
                     <label for="file" class="button"> Submit image</label>
                 </form>
             </div>
+
+<span class="glyphicon glyphicon-heart-broken"></span>
+
+{{carslist[x][0]['Make']}} {{carslist[x][0]['Model']}} {{carslist[x][0]['Generation']}}
