@@ -344,3 +344,12 @@ def remove_review():
     db.execute("DELETE FROM reviews WHERE (id= :id)", id = id)
     return redirect(url_for('profile'))
 
+@app.route("/unfavourite", methods=["POST"])
+@login_required
+def unfavourite():
+
+    user_id = session.get("user_id")
+    car_id = request.args.get('id')
+    db.execute("DELETE FROM favourites WHERE (car_id= :car_id) AND (user_id = :user_id)", car_id = car_id, user_id = user_id)
+    return redirect(url_for('favourites'))
+
