@@ -12,7 +12,7 @@
         {% for x in range (0,length) %}
         <section class="faves-card">
 
-            <a href="/carpage?id={{carslist[x][0]['id']}}"><img class="pic" src="http://bootdey.com/img/Content/avatar/avatar1.png"></a>
+            <a href="/carpage?id={{carslist[x][0]['id']}}"><img class="pic" src="https://github.com/sebastiaantl/BMWreview/blob/master/images/{{carslist[x][0]['Make']}}%20{{carslist[x][0]['Model']}}.jpg?raw=true"></a>
             <form action="/unfavourite?id={{carslist[x][0]['id']}}" method="post">
             <button type="submit" class="un_favourite">💔</button>
             </form>
