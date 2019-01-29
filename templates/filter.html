@@ -5,57 +5,38 @@
 
 {% block main %}
 
-<div class="container">
-	<div class="col-md-9">
-
-        <div class="container">
-        	<div class="row">
-                <div id="filter-panel" class="collapse filter-panel">
-                    <div class="panel panel-default">
-                        <div class="panel-body">
-                            <form class="form-inline" role="form" method="GET" action="filter">
-                                <div class="form-group">
-                                    <label class="filter-col" style="margin-right:0;" for="pref-perpage">Number of seats: </label>
-                                    <select name="seats" class="form-control">
-                                        <option selected value=""> -- select number of seats -- </option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="4">4</option>
-                                        <option value="5">5</option>
-                                    </select>
-                                </div> <!-- form group [rows] -->
-
-                                <div class="form-group">
-                                    <label class="filter-col" style="margin-right:0;" for="pref-perpage">Engine type: </label>
-                                    <select name="enginetype" class="form-control">
-                                        <option selected value=""> -- select engine type -- </option>
-                                        <option value="Disel">Disel</option>
-                                        <option value="Gasoline">Gasoline</option>
-                                        <option value="Hybrid">Hybrid</option>
-                                        <option  value="Electric">Electric</option>
-                                    </select>
-                                </div> <!-- form group [rows] -->
-
-                                <button type="submit" class="btn btn-default filter-col">
-                                    <span class="glyphicon glyphicon-filter"></span> Filter
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#filter-panel">
-                    <span class="glyphicon glyphicon-cog"></span> Advanced Search
-                </button>
-        	</div>
-        </div>
-
 
         {% for x in filtered %}
-        <section class="faves-card">
-          <a href="#"><img class="pic" src="http://bootdey.com/img/Content/avatar/avatar1.png"></a>
-          <div class="header"><a href="/carpage?id={{x['id']}}">{{x['Make']}} {{x['Model']}} {{x['Generation']}}</a></div><br/>
-          <div class="description">specs</div>
-        </section>
+         <div class="col-md-12">
+            <div class="row">
+
+                <section class="faves-card">
+
+                    <a href="#"><img class="pic" src="http://bootdey.com/img/Content/avatar/avatar1.png"></a>
+
+                    <div class="description">
+                      <ul class="list-group">
+                        <li class="list-group-item text-muted"><a href="/carpage?id={{x['id']}}">{{x['Make']}} {{x['Model']}} {{x['Generation']}}</a><i class="fa fa-dashboard fa-1x"></i></li>
+
+                        <li class="list-group-item text-right"><span class="pull-left"><strong>Stars</strong></span>
+                            {% for i in range (0, x['stars']) %}
+                              <span class="glyphicon glyphicon-star"></span>
+                            {% endfor %}
+                            {% for i in range (0,5 - x['stars']) %}
+                              <span class="glyphicon glyphicon-star-empty"></span>
+                            {% endfor %}
+                        </li>
+                        <li class="list-group-item text-right"><span class="pull-left"><strong>From - To</strong></span> {{x['Year_from_Generation']}} - {{x['Year_to_Generation']}}</li>
+                        <li class="list-group-item text-right"><span class="pull-left"><strong>Serie</strong></span> {{x['Serie']}}</li>
+                        <li class="list-group-item text-right"><span class="pull-left"><strong>Trim</strong></span> {{x['Trim']}}</li>
+                        <li class="list-group-item text-right"><span class="pull-left"><strong>Seats</strong></span> {{x['Number_of_seater']}}</li>
+                        <li class="list-group-item text-right"><span class="pull-left"><strong>Engine type</strong></span> {{x['Engine_type']}}</li>
+                        <li class="list-group-item text-right"><span class="pull-left"><strong>Max speed</strong></span> {{x['Max_speed_kmh']}} kmh</li>
+                      </ul>
+                    </div>
+                </section>
+            </div>
+        </div>
         {% endfor %}
 
     </div>
