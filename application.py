@@ -13,6 +13,8 @@ app = Flask(__name__)
 UPLOAD_FOLDER = os.path.basename('uploads')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
+thequery = ""
+
 # ensure responses aren't cached
 if app.config["DEBUG"]:
     @app.after_request
@@ -266,15 +268,20 @@ def search():
     thequery = a
     results = db.execute("SELECT Make, Model, Generation, id, Year_from_Generation, Year_to_Generation, Serie, Trim, Number_of_seater, Engine_type, Max_speed_kmh, stars FROM data WHERE upper(Model) = :a UNION ALL SELECT Make, Model, Generation, id, Year_from_Generation, Year_to_Generation, Serie, Trim, Number_of_seater, Engine_type, Max_speed_kmh, stars FROM data WHERE upper(Generation) =:b", a=a.upper(), b=a.upper())
     resultsnumber = len(results)
-    return render_template("searchresult.html", a=a, results=results, resultsnumber=resultsnumber)
+    return render_template("searchresult.html", a=a, results=results, resultsnumber=resultsnumber, thequery = thequery)
 
 
 @app.route("/filter")
 def filter():
+    print(thequery)
     seats = request.args.get('seats')
     enginetype= request.args.get('enginetype')
-    results = db.execute("SELECT Make, Model,Generation,id FROM data WHERE upper(Model) = :model UNION ALL SELECT Make, Model, Generation,id FROM data WHERE upper(Generation) =:generation", model=thequery.upper(), generation=thequery.upper())
-    models = [results[0]["Model"]]
+    results = db.execute("SELECT Make, Model, Generation, id, Year_from_Generation, Year_to_Generation, Serie, Trim, Number_of_seater, Engine_type, Max_speed_kmh, stars FROM data WHERE upper(Model) = :model UNION ALL SELECT Make, Model, Generation, id, Year_from_Generation, Year_to_Generation, Serie, Trim, Number_of_seater, Engine_type, Max_speed_kmh, stars FROM data WHERE upper(Generation) =:generation", model=thequery.upper(), generation=thequery.upper())
+    print(results)
+    if len(results) != 0:
+        models = results[0]["Model"]
+    else:
+        models = []
     error = ""
 
     filtered = results
@@ -283,16 +290,16 @@ def filter():
     if seats =="":
         if enginetype !="":
             for model in models:
-                filtered = db.execute("SELECT Make, Model,Generation,id FROM data WHERE upper(Model) = :model AND Engine_type= :enginetype", model=model.upper(), enginetype=enginetype)
+                filtered = db.execute("SELECT Make, Model, Generation, id, Year_from_Generation, Year_to_Generation, Serie, Trim, Number_of_seater, Engine_type, Max_speed_kmh, stars FROM data WHERE upper(Model) = :model AND Engine_type= :enginetype", model=model.upper(), enginetype=enginetype)
     if seats !="":
         if enginetype =="":
             for model in models:
-                filtered = db.execute("SELECT Make,Model,Generation,id FROM data WHERE upper(Model) = :model AND Number_of_seater = :seats", model=model.upper(), seats=seats)
+                filtered = db.execute("SELECT Make, Model, Generation, id, Year_from_Generation, Year_to_Generation, Serie, Trim, Number_of_seater, Engine_type, Max_speed_kmh, stars FROM data WHERE upper(Model) = :model AND Number_of_seater = :seats", model=model.upper(), seats=seats)
         elif enginetype !="":
             for model in models:
-                filtered = db.execute("SELECT Make,Model,Generation,id FROM data WHERE upper(Model) = :model AND Number_of_seater = :seats AND Engine_type= :enginetype", model=model.upper(), seats=seats, enginetype=enginetype)
+                filtered = db.execute("SELECT Make, Model, Generation, id, Year_from_Generation, Year_to_Generation, Serie, Trim, Number_of_seater, Engine_type, Max_speed_kmh, stars FROM data WHERE upper(Model) = :model AND Number_of_seater = :seats AND Engine_type= :enginetype", model=model.upper(), seats=seats, enginetype=enginetype)
     if len(filtered) == 0:
-        error= "No cars found!"
+        error = "No cars found!"
     return render_template("filter.html", seats = seats, thequery = thequery, filtered = filtered, error=error, results=results)
 
 @app.route("/carpage", methods=["GET", "POST"])

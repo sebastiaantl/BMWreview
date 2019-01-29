@@ -6,33 +6,43 @@
 {% block main %}
 
 
+{% if error != 0 %}
+    <center><div class="error"> {{ error }}</div></center>
+{% endif %}
+
+
 {% for x in filtered %}
     <center>
-        <section class="faves-card">
+        <div class="col-md-12">
+            <div class="row">
 
-            <a href="#"><img class="pic" src="http://bootdey.com/img/Content/avatar/avatar1.png"></a>
+                <section class="faves-card">
 
-            <div class="description">
-              <ul class="list-group">
-                <li class="list-group-item text-muted"><a href="/carpage?id={{x['id']}}">{{x['Make']}} {{x['Model']}} {{x['Generation']}}</a><i class="fa fa-dashboard fa-1x"></i></li>
+                    <a href="#"><img class="pic" src="http://bootdey.com/img/Content/avatar/avatar1.png"></a>
 
-                <li class="list-group-item text-right"><span class="pull-left"><strong>Stars</strong></span>
-                    {% for i in range (0, x['stars']) %}
-                      <span class="glyphicon glyphicon-star"></span>
-                    {% endfor %}
-                    {% for i in range (0,5 - x['stars']) %}
-                      <span class="glyphicon glyphicon-star-empty"></span>
-                    {% endfor %}
-                </li>
-                <li class="list-group-item text-right"><span class="pull-left"><strong>From - To</strong></span> {{x['Year_from_Generation']}} - {{x['Year_to_Generation']}}</li>
-                <li class="list-group-item text-right"><span class="pull-left"><strong>Serie</strong></span> {{x['Serie']}}</li>
-                <li class="list-group-item text-right"><span class="pull-left"><strong>Trim</strong></span> {{x['Trim']}}</li>
-                <li class="list-group-item text-right"><span class="pull-left"><strong>Seats</strong></span> {{x['Number_of_seater']}}</li>
-                <li class="list-group-item text-right"><span class="pull-left"><strong>Engine type</strong></span> {{x['Engine_type']}}</li>
-                <li class="list-group-item text-right"><span class="pull-left"><strong>Max speed</strong></span> {{x['Max_speed_kmh']}} kmh</li>
-              </ul>
+                    <div class="description">
+                      <ul class="list-group">
+                        <li class="list-group-item text-muted"><a href="/carpage?id={{x['id']}}">{{x['Make']}} {{x['Model']}} {{x['Generation']}}</a><i class="fa fa-dashboard fa-1x"></i></li>
+
+                        <li class="list-group-item text-right"><span class="pull-left"><strong>Stars</strong></span>
+                            {% for i in range (0, x['stars']) %}
+                              <span class="glyphicon glyphicon-star"></span>
+                            {% endfor %}
+                            {% for i in range (0,5 - x['stars']) %}
+                              <span class="glyphicon glyphicon-star-empty"></span>
+                            {% endfor %}
+                        </li>
+                        <li class="list-group-item text-right"><span class="pull-left"><strong>From - To</strong></span> {{x['Year_from_Generation']}} - {{x['Year_to_Generation']}}</li>
+                        <li class="list-group-item text-right"><span class="pull-left"><strong>Serie</strong></span> {{x['Serie']}}</li>
+                        <li class="list-group-item text-right"><span class="pull-left"><strong>Trim</strong></span> {{x['Trim']}}</li>
+                        <li class="list-group-item text-right"><span class="pull-left"><strong>Seats</strong></span> {{x['Number_of_seater']}}</li>
+                        <li class="list-group-item text-right"><span class="pull-left"><strong>Engine type</strong></span> {{x['Engine_type']}}</li>
+                        <li class="list-group-item text-right"><span class="pull-left"><strong>Max speed</strong></span> {{x['Max_speed_kmh']}} kmh</li>
+                      </ul>
+                    </div>
+                </section>
             </div>
-        </section>
+        </div>
     </center>
 {% endfor %}
 
