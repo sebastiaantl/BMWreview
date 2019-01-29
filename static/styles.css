@@ -417,6 +417,32 @@ body{
 }
 
 .un_favourite{
+    border: none;
+    margin-right: 5px;
+    border-radius: 20px;
+    background-color: #f2f2f2;
+    box-shadow: 2px 2px 2px grey;
     float: right;
     font-size: 27px;
+}
+
+.un_favourite{
+    border: none;
+    margin-right: 5px;
+    border-radius: 20px;
+    background-color: #f2f2f2;
+    box-shadow: 2px 2px 2px grey;
+    float: right;
+    font-size: 27px;
+}
+
+.undo_review{
+    border: none;
+    margin-right: 20px;
+    border-radius: 20px;
+    background-color: #ed4747;
+    color: #ffffff;
+    box-shadow: 2px 2px 2px grey;
+    float: right;
+    font-size: 18px;
 }
