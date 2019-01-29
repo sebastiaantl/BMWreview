@@ -43,8 +43,6 @@ def homepage():
         users = i['user_id']
         username = db.execute("SELECT username FROM users WHERE id = :id", id = users)
         userlist.append(username)
-    print("dit is wat we zoeken")
-    print(users)
     lastcarids = []
     for x in lastreviews:
         lastcarids.append(x['car_id'])
