@@ -335,3 +335,12 @@ def update_avatar():
     file.save(f)
 
     return redirect(url_for('profile'))
+
+@app.route("/remove_review", methods=["POST"])
+@login_required
+def remove_review():
+
+    id = request.args.get('id')
+    db.execute("DELETE FROM reviews WHERE (id= :id)", id = id)
+    return redirect(url_for('profile'))
+
