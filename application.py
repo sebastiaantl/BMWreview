@@ -13,8 +13,6 @@ app = Flask(__name__)
 UPLOAD_FOLDER = os.path.basename('uploads')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-thequery = ""
-
 # ensure responses aren't cached
 if app.config["DEBUG"]:
     @app.after_request
@@ -52,20 +50,8 @@ def homepage():
         lastcars.append(db.execute("SELECT Make, Model, Generation from data WHERE id = :id", id= ids))
     for i in range(len(lastreviews)):
         lastreviews.append(lastcars[i])
-    highestrated = db.execute("SELECT Make, Model, Generation, stars, id,  Year_from_Generation, Year_to_Generation, Serie, Trim, Number_of_seater, Engine_type, Max_speed_kmh FROM data ORDER BY stars DESC LIMIT 3")
+    highestrated = db.execute("SELECT Make, Model, Generation, CAST(stars AS INT) AS stars, id,  Year_from_Generation, Year_to_Generation, Serie, Trim, Number_of_seater, Engine_type, Max_speed_kmh FROM data ORDER BY stars DESC LIMIT 3")
     carslist = db.execute("SELECT Make, Model, Generation FROM data ORDER BY id ASC")
-    # testlist = []
-    # for cars in carslist:
-    #     q = str(cars['Make'] + " " + cars['Model'] + " " + cars['Generation'])
-    #     test = str(cars['Make'] + " " + cars['Model'])
-    #     testlist.append(test)
-    # testlist = set(testlist)
-
-    # for x in testlist:
-    #     response = google_images_download.googleimagesdownload()   #class instantiation
-    #     arguments = {"keywords":x,"limit":1,"print_urls":True, "size": "medium", "format": "jpg", "prefix": x}   #creating list of arguments
-    #     paths = response.download(arguments)   #passing the arguments to the function
-    #     print(paths)   #printing absolute paths of the downloaded images
     return render_template("homepage.html", lastreviews = lastreviews, highestrated = highestrated, userlist = userlist)
 
 @app.route("/profile")
@@ -264,23 +250,27 @@ def search():
 
 @app.route("/filter")
 def filter():
-    print(thequery)
+    # get seats and enginetype
     seats = request.args.get('seats')
     enginetype= request.args.get('enginetype')
+    #searchresult for previous query
     results = db.execute("SELECT Make, Model, Generation, id, Year_from_Generation, Year_to_Generation, Serie, Trim, Number_of_seater, Engine_type, Max_speed_kmh, stars FROM data WHERE upper(Model) = :model UNION ALL SELECT Make, Model, Generation, id, Year_from_Generation, Year_to_Generation, Serie, Trim, Number_of_seater, Engine_type, Max_speed_kmh, stars FROM data WHERE upper(Generation) =:generation", model=thequery.upper(), generation=thequery.upper())
-    print(results)
+    models = []
     if len(results) != 0:
-        models = results[0]["Model"]
+        for i in range(0, len(results)):
+            models.append(results[i]['Model'])
     else:
         models = []
+    # intial error is empty
     error = ""
-
-    filtered = results
+    success = "Your search query gave the following results:"
+    # filter is empty > return searchresults without filtering
     if seats =="" and enginetype =="":
         filtered = results
     if seats =="":
         if enginetype !="":
             for model in models:
+                print (model)
                 filtered = db.execute("SELECT Make, Model, Generation, id, Year_from_Generation, Year_to_Generation, Serie, Trim, Number_of_seater, Engine_type, Max_speed_kmh, stars FROM data WHERE upper(Model) = :model AND Engine_type= :enginetype", model=model.upper(), enginetype=enginetype)
     if seats !="":
         if enginetype =="":
@@ -291,7 +281,8 @@ def filter():
                 filtered = db.execute("SELECT Make, Model, Generation, id, Year_from_Generation, Year_to_Generation, Serie, Trim, Number_of_seater, Engine_type, Max_speed_kmh, stars FROM data WHERE upper(Model) = :model AND Number_of_seater = :seats AND Engine_type= :enginetype", model=model.upper(), seats=seats, enginetype=enginetype)
     if len(filtered) == 0:
         error = "No cars found!"
-    return render_template("filter.html", seats = seats, thequery = thequery, filtered = filtered, error=error, results=results)
+        success = ""
+    return render_template("filter.html", seats = seats, thequery = thequery, filtered = filtered, error=error, success = success, results=results)
 
 @app.route("/carpage", methods=["GET", "POST"])
 def carpage():
@@ -307,7 +298,7 @@ def carpage():
     specs = db.execute("SELECT Serie, Trim, Number_of_seater, Engine_type, Max_speed_kmh, Curb_weight_kg, Gearbox_type, Fuel_tank_capacity_litre, Acceleration_0100_kmh_second, Engine_power_bhp, Number_of_cylinders FROM data WHERE id = :car_id", car_id = id)
     print(specs)
     reviews = db.execute("SELECT user_id, stars, review, date FROM reviews WHERE car_id = :car_id", car_id = id)
-    print(reviews)
+    reviews = reviews[::-1]
     userlist = []
     for x in reviews:
         print(x)
@@ -321,14 +312,15 @@ def carpage():
         review = request.form.get("comment")
         user_id = session.get("user_id")
         old_number_grades = len(db.execute("SELECT car_id FROM reviews WHERE car_id= :car_id", car_id = id))
+        global total_number_grades
         total_number_grades = old_number_grades + 1
         db.execute("INSERT INTO reviews (car_id, user_id, stars, review) VALUES(:car_id, :user_id, :stars, :review)", car_id=id, user_id=user_id, stars=stars, review=review)
         total_grades = db.execute("SELECT stars FROM reviews WHERE car_id= :car_id", car_id = id)
         total_grade = 0
         for i in total_grades:
             total_grade += i['stars']
+        global grade
         grade = total_grade/total_number_grades
-        print (grade)
         db.execute("UPDATE data SET stars= :grade WHERE id= :id", grade=grade, id=id)
         return render_template("carpage.html", header = header, brand = brand, model = model, generation = generation, startyear = startyear, endyear = endyear, id=id, reviews = reviews, userlist = userlist, length = len(reviews), stars = stars, specs = specs)
     else:
@@ -351,7 +343,18 @@ def update_avatar():
 def remove_review():
     user_id = session.get("user_id")
     id = request.args.get('id')
+    total_number_grades = len(db.execute("SELECT car_id FROM reviews WHERE car_id= :car_id", car_id = id))
+    grade_to_retract = db.execute("SELECT stars FROM reviews WHERE (car_id= :id) AND (user_id = :user_id)", id = id, user_id = user_id)
+    grade_to_retract = grade_to_retract[0]['stars']
     db.execute("DELETE FROM reviews WHERE (car_id= :id) AND (user_id = :user_id)", id = id, user_id = user_id)
+    a = grade * total_number_grades
+    a = a - grade_to_retract
+    if total_number_grades == 1:
+        a = 0
+    else:
+        a = a / (total_number_grades - 1)
+    db.execute("UPDATE data SET stars= :newgrade WHERE id=:id", newgrade = a, id = id)
+    print(a, "CIJFER")
     return redirect(url_for('profile'))
 
 @app.route("/unfavourite", methods=["POST"])

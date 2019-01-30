@@ -8,7 +8,7 @@
 <center>
 
 <div class="carpage-header">{{brand}} {{model}} {{generation}}</div>
-<img src="https://github.com/sebastiaantl/BMWreview/blob/master/images/{{brand}}%20{{model}}.jpg?raw=true" style="width: 80%;"/>
+<div class="carimg"><img src="https://github.com/sebastiaantl/BMWreview/blob/master/images/{{brand}}%20{{model}}.jpg?raw=true"/></div>
 <div class="row">
   <div class="col-md-12">
 
@@ -41,7 +41,7 @@
 
   </div>
 </div>
-<div>
+<div class="favorite">
   <form action="/favourites?id={{id}}" method="post">
   <button type="submit" class="btn btn-danger">Favourite</button>
   </form>
@@ -83,7 +83,6 @@
   {% for i in range(length) %}
     <div class="review-card">
         <div class="row">
-
             <div class="col-md-2">
               <img class="pic" src="https://bootdey.com/img/Content/avatar/avatar1.png">
               <div class="reviewer">By {{userlist[i][0]['username']}}</div>
@@ -92,8 +91,13 @@
 
               <div class="review">{{reviews[i]['review']}}</div>
               <div class="date">{{reviews[i]['date']}}</div>
+              {% for i in range (0,5 - reviews[i]['stars']) %}
+              <div class="stars"><span class="glyphicon glyphicon-star-empty"></span></div>
+              {% endfor %}
+              {% for i in range (0,reviews[i]['stars']) %}
+              <div class="stars"><span class="glyphicon glyphicon-star"></span></div>
+              {% endfor %}
             </div>
-
         </div>
     </div>
   {% endfor %}

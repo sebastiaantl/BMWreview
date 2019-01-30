@@ -23,8 +23,8 @@ body{
 }
 
 .car-card .pic{
-    height: 100px;
-    width: 100px;
+    height: 5.6em;
+    width: 10em;
     border-top-left-radius: 5px;
 
 }
@@ -55,13 +55,13 @@ body{
     border-radius: 5px;
     margin-bottom: 20px;
     width: 750px;
-    height:120px;
+    height: 100px;
     box-shadow: 1px 1px 5px #343a40;
 }
 
 .review-card .pic{
-    width: 100px;
-    height: 100px;
+    height: 5em;
+    width: 8em;
     border-top-left-radius: 5px;
     float: left;
 }
@@ -89,6 +89,9 @@ body{
 }
 
 .review-card .stars{
+    position: relative;
+    top: -40px;
+    margin-right: 12px;
     font-size: 20px;
     float: right;
 }
@@ -113,8 +116,8 @@ body{
 }
 
 .faves-card .pic{
-    height: 200px;
-    width: 200px;
+    height: 8.5em;
+    width: 14em;
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
     float: left;
@@ -162,8 +165,8 @@ body{
 }
 
 .profile-card .pic{
-    width: 100px;
-    height: 100px;
+    height: 5em;
+    width: 8em;
     border-top-left-radius: 5px;
     float: left;
 }
@@ -394,11 +397,20 @@ body{
     color: #ffffff;
     background-color: #f74a33;
     border-radius: 5px;
-    width: 35%;
-    height: 60px;
     font-size: 25px;
 }
 
+.success{
+    margin:auto;
+    margin-bottom: 2em;
+    opacity: 0.9;
+    display: inline-block;
+    color: #ffffff;
+    background-color: #1aff1a;
+    border-radius: 5px;
+    font-size: 25px;
+
+}
 .no_reviews{
     margin:auto;
     opacity: 0.9;
@@ -445,4 +457,24 @@ body{
     box-shadow: 2px 2px 2px grey;
     float: right;
     font-size: 18px;
+}
+
+.carimg img{
+    max-width: 60%;
+    height: auto;
+    padding-bottom: 5em;
+}
+
+.favorite{
+    margin-top: 2em;
+}
+
+.rating{
+    min-width: 90px;
+    min-height: 40px;
+}
+
+.submit-review{
+    min-width: 130px;
+    min-height: 40px;
 }
