@@ -24,18 +24,6 @@ def login_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
-def grade():
-    ids = db.execute("SELECT id FROM data")
-    carids = db.execute("SELECT car_id FROM reviews")
-    cars =[]
-    for i in range(len(carids)):
-        cars.append(carids[i]['car_id'])
-    #for i in range(len(ids)):
-        #if (ids[i]['id']) is in cars:
-         #   print(ids[i]['id'])
-        #db.execute("UPDATE data SET stars=0 WHERE id= :id", id = ids[i]['id'])
-    return cars
-
 def home():
     # select last five results and get corresponding car data
     lastreviews = db.execute("SELECT * FROM reviews ORDER BY id DESC LIMIT 5")
@@ -204,7 +192,7 @@ def favourite_func():
             # get full name of car by car id
             carslist = []
             for x in cars:
-                carslist.append(db.execute("SELECT Make, Model, Generation, id, Year_from_Generation, Year_to_Generation, Serie, Trim, Number_of_seater, Engine_type, Max_speed_kmh, stars FROM data WHERE id= :car", car=x))
+                carslist.append(db.execute("SELECT Make, Model, Generation, id, Year_from_Generation, Year_to_Generation, Serie, Trim, Number_of_seater, Engine_type, Max_speed_kmh, CAST(stars AS INT) AS stars FROM data WHERE id= :car", car=x))
             length = len(carslist)
             return render_template("favourites.html", carslist = carslist, length=length, faves = faves)
         # prevent duplicated favourites by a single user
@@ -217,7 +205,7 @@ def favourite_func():
                 cars.append(i['car_id'])
             carslist = []
             for x in cars:
-                carslist.append(db.execute("SELECT Make, Model, Generation, id, Year_from_Generation, Year_to_Generation, Serie, Trim, Number_of_seater, Engine_type, Max_speed_kmh, stars FROM data WHERE id= :car", car=x))
+                carslist.append(db.execute("SELECT Make, Model, Generation, id, Year_from_Generation, Year_to_Generation, Serie, Trim, Number_of_seater, Engine_type, Max_speed_kmh, CAST(stars AS INT) AS stars FROM data WHERE id= :car", car=x))
             length = len(carslist)
             return render_template("favourites.html", carslist = carslist, length=length, faves = faves)
     # display faves if no favourite is added (no POST request)
@@ -240,7 +228,7 @@ def search_func():
     global thequery
     thequery = a
     # search database for query
-    results = db.execute("SELECT Make, Model, Generation, id, Year_from_Generation, Year_to_Generation, Serie, Trim, Number_of_seater, Engine_type, Max_speed_kmh, stars FROM data WHERE upper(Model) = :a UNION ALL SELECT Make, Model, Generation, id, Year_from_Generation, Year_to_Generation, Serie, Trim, Number_of_seater, Engine_type, Max_speed_kmh, stars FROM data WHERE upper(Generation) =:b", a=a.upper(), b=a.upper())
+    results = db.execute("SELECT Make, Model, Generation, id, Year_from_Generation, Year_to_Generation, Serie, Trim, Number_of_seater, Engine_type, Max_speed_kmh, CAST(stars AS INT) AS stars FROM data WHERE upper(Model) = :a UNION ALL SELECT Make, Model, Generation, id, Year_from_Generation, Year_to_Generation, Serie, Trim, Number_of_seater, Engine_type, Max_speed_kmh, stars FROM data WHERE upper(Generation) =:b", a=a.upper(), b=a.upper())
     resultsnumber = len(results)
     return render_template("searchresult.html", a=a, results=results, resultsnumber=resultsnumber, thequery = thequery)
 
@@ -249,7 +237,7 @@ def filter_func():
     seats = request.args.get('seats')
     enginetype= request.args.get('enginetype')
     #searchresult for previous query
-    results = db.execute("SELECT Make, Model, Generation, id, Year_from_Generation, Year_to_Generation, Serie, Trim, Number_of_seater, Engine_type, Max_speed_kmh, stars FROM data WHERE upper(Model) = :model UNION ALL SELECT Make, Model, Generation, id, Year_from_Generation, Year_to_Generation, Serie, Trim, Number_of_seater, Engine_type, Max_speed_kmh, stars FROM data WHERE upper(Generation) =:generation", model=thequery.upper(), generation=thequery.upper())
+    results = db.execute("SELECT Make, Model, Generation, id, Year_from_Generation, Year_to_Generation, Serie, Trim, Number_of_seater, Engine_type, Max_speed_kmh, stars FROM data WHERE upper(Model) = :model UNION ALL SELECT Make, Model, Generation, id, Year_from_Generation, Year_to_Generation, Serie, Trim, Number_of_seater, Engine_type, Max_speed_kmh, CAST(stars AS INT) AS stars FROM data WHERE upper(Generation) =:generation", model=thequery.upper(), generation=thequery.upper())
     models = []
     if len(results) != 0:
         for i in range(0, len(results)):
@@ -268,15 +256,15 @@ def filter_func():
         if enginetype !="":
             for model in models:
                 print (model)
-                filtered = db.execute("SELECT Make, Model, Generation, id, Year_from_Generation, Year_to_Generation, Serie, Trim, Number_of_seater, Engine_type, Max_speed_kmh, stars FROM data WHERE upper(Model) = :model AND Engine_type= :enginetype", model=model.upper(), enginetype=enginetype)
+                filtered = db.execute("SELECT Make, Model, Generation, id, Year_from_Generation, Year_to_Generation, Serie, Trim, Number_of_seater, Engine_type, Max_speed_kmh, CAST(stars AS INT) AS stars FROM data WHERE upper(Model) = :model AND Engine_type= :enginetype", model=model.upper(), enginetype=enginetype)
     # check filters and search database
     if seats !="":
         if enginetype =="":
             for model in models:
-                filtered = db.execute("SELECT Make, Model, Generation, id, Year_from_Generation, Year_to_Generation, Serie, Trim, Number_of_seater, Engine_type, Max_speed_kmh, stars FROM data WHERE upper(Model) = :model AND Number_of_seater = :seats", model=model.upper(), seats=seats)
+                filtered = db.execute("SELECT Make, Model, Generation, id, Year_from_Generation, Year_to_Generation, Serie, Trim, Number_of_seater, Engine_type, Max_speed_kmh, CAST(stars AS INT) AS stars FROM data WHERE upper(Model) = :model AND Number_of_seater = :seats", model=model.upper(), seats=seats)
         elif enginetype !="":
             for model in models:
-                filtered = db.execute("SELECT Make, Model, Generation, id, Year_from_Generation, Year_to_Generation, Serie, Trim, Number_of_seater, Engine_type, Max_speed_kmh, stars FROM data WHERE upper(Model) = :model AND Number_of_seater = :seats AND Engine_type= :enginetype", model=model.upper(), seats=seats, enginetype=enginetype)
+                filtered = db.execute("SELECT Make, Model, Generation, id, Year_from_Generation, Year_to_Generation, Serie, Trim, Number_of_seater, Engine_type, Max_speed_kmh, CAST(stars AS INT) AS stars FROM data WHERE upper(Model) = :model AND Number_of_seater = :seats AND Engine_type= :enginetype", model=model.upper(), seats=seats, enginetype=enginetype)
     if len(filtered) == 0:
         error = "No cars found!"
         success = ""
@@ -295,7 +283,7 @@ def carpage_func():
     stars = db.execute("SELECT stars FROM reviews WHERE car_id = :car_id", car_id = id)
     specs = db.execute("SELECT Serie, Trim, Number_of_seater, Engine_type, Max_speed_kmh, Curb_weight_kg, Gearbox_type, Fuel_tank_capacity_litre, Acceleration_0100_kmh_second, Engine_power_bhp, Number_of_cylinders FROM data WHERE id = :car_id", car_id = id)
     # get reviews by car id
-    reviews = db.execute("SELECT user_id, stars, review, date FROM reviews WHERE car_id = :car_id", car_id = id)
+    reviews = db.execute("SELECT user_id, CAST(stars AS INT) AS stars, review, date FROM reviews WHERE car_id = :car_id", car_id = id)
     reviews = reviews[::-1]
     userlist = []
     for x in reviews:
