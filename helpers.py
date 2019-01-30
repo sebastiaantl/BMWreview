@@ -224,13 +224,13 @@ def favourite_func():
 
 def search_func():
     # search for car by query
-    a = request.args.get('query')
+    query = request.args.get('query')
     global thequery
-    thequery = a
+    thequery = query
     # search database for query
-    results = db.execute("SELECT Make, Model, Generation, id, Year_from_Generation, Year_to_Generation, Serie, Trim, Number_of_seater, Engine_type, Max_speed_kmh, CAST(stars AS INT) AS stars FROM data WHERE upper(Model) = :a UNION ALL SELECT Make, Model, Generation, id, Year_from_Generation, Year_to_Generation, Serie, Trim, Number_of_seater, Engine_type, Max_speed_kmh, stars FROM data WHERE upper(Generation) =:b", a=a.upper(), b=a.upper())
+    results = db.execute("SELECT Make, Model, Generation, id, Year_from_Generation, Year_to_Generation, Serie, Trim, Number_of_seater, Engine_type, Max_speed_kmh, CAST(stars AS INT) AS stars FROM data WHERE upper(Model) = :a UNION ALL SELECT Make, Model, Generation, id, Year_from_Generation, Year_to_Generation, Serie, Trim, Number_of_seater, Engine_type, Max_speed_kmh, stars FROM data WHERE upper(Generation) =:b", a=query.upper(), b=query.upper())
     resultsnumber = len(results)
-    return render_template("searchresult.html", a=a, results=results, resultsnumber=resultsnumber, thequery = thequery)
+    return render_template("searchresult.html", query=query, results=results, resultsnumber=resultsnumber, thequery = thequery)
 
 def filter_func():
     # get seats and enginetype
