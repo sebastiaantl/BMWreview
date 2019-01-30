@@ -308,35 +308,27 @@ def carpage():
         userlist.append(username)
     # insert review into database
     if request.method == "POST":
-        stars = request.form.get("rate")
-        review = request.form.get("comment")
-        user_id = session.get("user_id")
-        old_number_grades = len(db.execute("SELECT car_id FROM reviews WHERE car_id= :car_id", car_id = id))
-        global total_number_grades
-        total_number_grades = old_number_grades + 1
-        db.execute("INSERT INTO reviews (car_id, user_id, stars, review) VALUES(:car_id, :user_id, :stars, :review)", car_id=id, user_id=user_id, stars=stars, review=review)
-        total_grades = db.execute("SELECT stars FROM reviews WHERE car_id= :car_id", car_id = id)
-        total_grade = 0
-        for i in total_grades:
-            total_grade += i['stars']
-        global grade
-        grade = total_grade/total_number_grades
-        db.execute("UPDATE data SET stars= :grade WHERE id= :id", grade=grade, id=id)
-        return render_template("carpage.html", header = header, brand = brand, model = model, generation = generation, startyear = startyear, endyear = endyear, id=id, reviews = reviews, userlist = userlist, length = len(reviews), stars = stars, specs = specs)
+        if session.get("user_id"):
+            stars = request.form.get("rate")
+            review = request.form.get("comment")
+            user_id = session.get("user_id")
+            old_number_grades = len(db.execute("SELECT car_id FROM reviews WHERE car_id= :car_id", car_id = id))
+            global total_number_grades
+            total_number_grades = old_number_grades + 1
+            db.execute("INSERT INTO reviews (car_id, user_id, stars, review) VALUES(:car_id, :user_id, :stars, :review)", car_id=id, user_id=user_id, stars=stars, review=review)
+            total_grades = db.execute("SELECT stars FROM reviews WHERE car_id= :car_id", car_id = id)
+            total_grade = 0
+            for i in total_grades:
+                total_grade += i['stars']
+            global grade
+            grade = total_grade/total_number_grades
+            db.execute("UPDATE data SET stars= :grade WHERE id= :id", grade=grade, id=id)
+            return render_template("carpage.html", header = header, brand = brand, model = model, generation = generation, startyear = startyear, endyear = endyear, id=id, reviews = reviews, userlist = userlist, length = len(reviews), stars = stars, specs = specs)
+        else:
+            return render_template("login.html")
     else:
         return render_template("carpage.html", header = header, brand = brand, model = model, generation = generation, startyear = startyear, endyear = endyear, id=id, reviews = reviews, userlist = userlist, length = len(reviews), stars = stars, specs = specs)
 
-@app.route("/update_avatar", methods=["POST"])
-def update_avatar():
-
-    file = request.files['file']
-    filename = str(session["user_id"]) + "_" + file.filename
-
-    f = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
-
-    file.save(f)
-
-    return redirect(url_for('profile'))
 
 @app.route("/remove_review", methods=["POST"])
 @login_required
